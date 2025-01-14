@@ -2,7 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && vite build && vite build",
+        "build": "tsc && vite build",
         "dev": "vite",
         "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix"
     },
@@ -36,6 +36,7 @@
         "vite": "^6.0"
     },
     "dependencies": {
+        "@radix-ui/react-avatar": "^1.1.2",
         "@radix-ui/react-label": "^2.1.1",
         "@radix-ui/react-slot": "^1.1.1",
         "class-variance-authority": "^0.7.1",

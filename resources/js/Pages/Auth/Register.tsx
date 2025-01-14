@@ -1,8 +1,8 @@
 import ApplicationLogoBox from '@/Components/ApplicationLogoBox';
 import InputError from '@/Components/InputError';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -40,7 +40,7 @@ export default function Register() {
                             <span className="sr-only">{app.name}</span>
                         </a>
                         <h1 className="text-xl font-bold">
-                            Sign-up for {app.name}
+                            Sign up for {app.name}
                         </h1>
                         <div className="text-center text-sm">
                             Already have an account?{' '}

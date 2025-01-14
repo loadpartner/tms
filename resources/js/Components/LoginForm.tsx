@@ -1,8 +1,8 @@
 import ApplicationLogoBox from '@/Components/ApplicationLogoBox';
 import InputError from '@/Components/InputError';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
 import { cn } from '@/lib/utils';
 import { PageProps } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
@@ -140,7 +140,7 @@ export function LoginForm({
                     </div> */}
                 </div>
             </form>
-            <div className="text-muted-foreground hover:[&_a]:text-primary text-balance text-center text-xs [&_a]:underline [&_a]:underline-offset-4">
+            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
                 {/* By clicking continue, you agree to our{' '}
                 <a href="#">Terms of Service</a> and{' '}
                 <a href="#">Privacy Policy</a>. */}

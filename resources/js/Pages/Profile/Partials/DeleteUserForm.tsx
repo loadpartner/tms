@@ -1,9 +1,9 @@
 import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef, useState } from 'react';
 
@@ -82,13 +82,11 @@ export default function DeleteUserForm({
                     </p>
 
                     <div className="mt-6">
-                        <InputLabel
-                            htmlFor="password"
-                            value="Password"
-                            className="sr-only"
-                        />
+                        <Label htmlFor="password" className="sr-only">
+                            Password
+                        </Label>
 
-                        <TextInput
+                        <Input
                             id="password"
                             type="password"
                             name="password"
@@ -98,7 +96,7 @@ export default function DeleteUserForm({
                                 setData('password', e.target.value)
                             }
                             className="mt-1 block w-3/4"
-                            isFocused
+                            autoFocus={true}
                             placeholder="Password"
                         />
 

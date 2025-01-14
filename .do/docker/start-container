@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Create necessary directories and set permissions
+mkdir -p /var/log/php-fpm
+mkdir -p /var/run/php
+touch /var/log/php-fpm/php-fpm.log
+
+# Set permissions for PHP-FPM logs and socket directory
+chown -R www-data:www-data /var/log/php-fpm
+chmod 755 /var/log/php-fpm
+chmod 644 /var/log/php-fpm/php-fpm.log
+chown -R www-data:www-data /var/run/php
+
+# Set Laravel directory permissions
+chown -R www-data:www-data /var/www/html/storage
+chown -R www-data:www-data /var/www/html/bootstrap/cache
+
+if [ ! -z "$WWWUSER" ]; then
+    usermod -u $WWWUSER www-data
+fi
+
+echo "APP_URL=${APP_URL}" >> /var/www/html/.env
+echo "ASSET_URL=${APP_URL}" >> /var/www/html/.env
+
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
