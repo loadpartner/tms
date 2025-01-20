@@ -26,7 +26,7 @@ class OrganizationController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Organization/Create');
+        return Inertia::render('Organizations/Create');
     }
 
     /**
@@ -60,7 +60,7 @@ class OrganizationController extends Controller
     {
         Gate::authorize('view', $organization);
 
-        return Inertia::render('Organization/Show', [
+        return Inertia::render('Organizations/Show', [
             'organization' => $organization->load('owner', 'users'),
             'invites' => $organization->invites,
             'roles' => $organization->roles->load('permissions', 'users'),

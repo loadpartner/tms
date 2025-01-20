@@ -4,6 +4,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrganizationInviteController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Shipments\ShipmentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -54,6 +55,8 @@ Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function
         Route::delete('role/{role}', [PermissionController::class, 'destroyRole'])->name('organizations.permissions.role.destroy');
         Route::patch('role/{role}', [PermissionController::class, 'updateRole'])->name('organizations.permissions.role.update');
     });
+
+    Route::resource('shipments', ShipmentController::class);
 });
 
 require __DIR__ . '/auth.php';

@@ -1,4 +1,4 @@
-import { Building, Dot, GalleryVerticalEnd, Home } from 'lucide-react';
+import { Building, Dot, GalleryVerticalEnd, Home, Truck } from 'lucide-react';
 import * as React from 'react';
 
 import { NavUser } from '@/Components/nav-user';
@@ -49,6 +49,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             <Home />
                             <span>Dashboard</span>
                             {route().current('dashboard') && <Dot />}
+                        </a>
+                    </SidebarMenuButton>
+                    <SidebarMenuButton asChild>
+                        <a href={route('shipments.index')}>
+                            <Truck />
+                            <span>Shipments</span>
+                            {route().current('shipments.index') && <Dot />}
                         </a>
                     </SidebarMenuButton>
                     {(permissions.ORGANIZATION_MANAGER ||

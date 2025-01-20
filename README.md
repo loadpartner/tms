@@ -56,3 +56,9 @@ sail npm run dev
 ``` bash
 sail php ./vendor/bin/phpstan analyse
 ```
+
+#### Running pre-commit & other dev environment checks
+This will run PHPStan and generate IDE completions for any actions.
+``` bash
+sail artisan dev:check
+```

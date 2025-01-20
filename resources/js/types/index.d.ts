@@ -20,3 +20,18 @@ export type PageProps<
         name: string;
     };
 };
+
+export interface Facility {
+    id: number;
+    name: string;
+}
+
+export interface Carrier {
+    id: number;
+    name: string;
+}
+
+export interface Shipper {
+    id: number;
+    name: string;
+}

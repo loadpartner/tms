@@ -58,7 +58,7 @@ class OrganizationInviteController extends Controller
 
         Gate::authorize('view', $orgInvite);
 
-        return Inertia::render('Organization/InviteAccept', [
+        return Inertia::render('Organizations/InviteAccept', [
             'organization' => $organization,
             'invite' => $orgInvite,
             'showCreateOption' => auth()->user()->organizations()->count() < 1,
