@@ -13,6 +13,7 @@ import {
     SidebarRail,
 } from '@/Components/ui/sidebar';
 import { usePage } from '@inertiajs/react';
+import NavLink from '@/Components/NavLink';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const user = usePage().props.auth.user;
@@ -61,6 +62,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             <Truck />
                             <span>Shipments</span>
                         </a>
+                    </SidebarMenuButton>
+                    <SidebarMenuButton
+                        asChild
+                        isActive={route().current('shippers')}
+                    >
+                        <NavLink
+                            href="/shippers"
+                            active={route().current('shippers')}
+                        >
+                            Shippers
+                        </NavLink>
                     </SidebarMenuButton>
                     {(permissions.ORGANIZATION_MANAGER ||
                         permissions.ORGANIZATION_MANAGE_USERS) && (
