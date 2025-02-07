@@ -20,6 +20,17 @@ class ShipperResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'address' => $this->address,
+            'city' => $this->city,
+            'state' => $this->state,
+            'zip' => $this->zip,
+            'contact_name' => $this->contact_name,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'selectable_label' => $this->selectable_label,
+            'locations' => LocationResource::collection($this->whenLoaded('locations')),
+            'notes' => NoteResource::collection($this->whenLoaded('notes')),
+            'shipments' => ShipmentResource::collection($this->whenLoaded('shipments')),
         ];
     }
 }

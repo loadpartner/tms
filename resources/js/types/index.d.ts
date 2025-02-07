@@ -34,6 +34,17 @@ export interface Carrier {
 export interface Shipper {
     id: number;
     name: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    contact_name?: string;
+    phone?: string;
+    email?: string;
+    selectable_label: string;
+    locations?: Location[];
+    notes?: Note[];
+    shipments?: Shipment[];
 }
 
 export interface ShipmentStop {
@@ -56,9 +67,15 @@ export interface ShipmentStop {
 
 export interface Shipment {
     id: number;
-    shipment_number: string;
+    reference_number: string;
+    pickup_date: string;
+    delivery_date: string;
+    status: string;
+    carrier?: {
+        id: number;
+        name: string;
+    };
     shippers: Shipper[];
-    carrier: Carrier;
     stops: ShipmentStop[];
     weight: number;
     trip_distance: number;

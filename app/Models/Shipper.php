@@ -14,6 +14,13 @@ class Shipper extends Model
     protected $fillable = [
         'organization_id',
         'name',
+        'address',
+        'city',
+        'state',
+        'zip',
+        'contact_name',
+        'phone',
+        'email',
     ];
 
     protected $appends = [ 'selectable_label' ];
@@ -21,5 +28,20 @@ class Shipper extends Model
     public function getSelectableLabelAttribute() : string
     {
         return sprintf("%s", $this->name);
+    }
+
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
+
+    public function shipments()
+    {
+        return $this->belongsToMany(Shipment::class);
+    }
+
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
     }
 }

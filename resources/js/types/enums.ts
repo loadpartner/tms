@@ -9,5 +9,7 @@ export enum StopType {
 }
 
 export enum Notable {
-    Shipment = 'shipment',
+    Shipment = 'App\\Models\\Shipment',
+    Shipper = 'App\\Models\\Shipper',
+    Carrier = 'App\\Models\\Carrier',
 }
