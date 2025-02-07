@@ -22,7 +22,10 @@ class StoreShipperRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'mc_number' => 'nullable|string|max:255',
+            'dot_number' => 'nullable|string|max:255',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

@@ -20,6 +20,15 @@ class ShipperResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'mc_number' => $this->mc_number,
+            'dot_number' => $this->dot_number,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'locations' => $this->whenLoaded('locations'),
+            'contacts' => $this->whenLoaded('contacts'),
+            'notes' => $this->whenLoaded('notes'),
+            'documents' => $this->whenLoaded('documents'),
         ];
     }
 }

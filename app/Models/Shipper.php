@@ -14,12 +14,44 @@ class Shipper extends Model
     protected $fillable = [
         'organization_id',
         'name',
+        'mc_number',
+        'dot_number',
+        'status',
     ];
 
     protected $appends = [ 'selectable_label' ];
 
+    protected $casts = [
+        'status' => 'string',
+    ];
+
     public function getSelectableLabelAttribute() : string
     {
         return sprintf("%s", $this->name);
+    }
+
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
+    }
+
+    public function documents()
+    {
+        return $this->morphMany(Document::class, 'documentable');
+    }
+
+    public function shipments()
+    {
+        return $this->hasMany(Shipment::class);
     }
 }
