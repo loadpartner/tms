@@ -99,4 +99,13 @@ Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function
     Route::post('locations', CreateLocation::class)->name('locations.store');
 });
 
+Route::prefix('shippers')->group(function () {
+    Route::get('/', [ShipperController::class, 'index'])->name('shippers.index');
+    Route::get('/create', [ShipperController::class, 'create'])->name('shippers.create');
+    Route::post('/', [ShipperController::class, 'store'])->name('shippers.store');
+    Route::get('/{shipper}', [ShipperController::class, 'show'])->name('shippers.show');
+    Route::get('/{shipper}/edit', [ShipperController::class, 'edit'])->name('shippers.edit');
+    Route::put('/{shipper}', [ShipperController::class, 'update'])->name('shippers.update');
+});
+
 require __DIR__ . '/auth.php';
