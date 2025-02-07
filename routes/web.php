@@ -97,6 +97,15 @@ Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function
 
     Route::get('locations/search', [LocationController::class, 'search'])->name('locations.search');
     Route::post('locations', CreateLocation::class)->name('locations.store');
+
+    Route::get('/shippers/{shipper}', [ShipperController::class, 'show'])->name('shippers.show');
+    Route::get('/shippers/{shipper}/loads', [ShipperController::class, 'loads'])->name('shippers.loads');
+
+    Route::put('/shippers/{shipper}', [ShipperController::class, 'update'])->name('shippers.update');
+
+    Route::post('/shippers/{shipper}/locations', [ShipperController::class, 'storeLocation'])->name('shippers.locations.store');
+
+    Route::post('/shippers/{shipper}/notes', [ShipperController::class, 'storeNote'])->name('shippers.notes.store');
 });
 
 require __DIR__ . '/auth.php';

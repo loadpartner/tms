@@ -19,6 +19,8 @@ export type PageProps<
     app: {
         name: string;
     };
+    shipper?: Shipper;
+    errors: any;
 };
 
 export interface Facility {
@@ -34,6 +36,8 @@ export interface Carrier {
 export interface Shipper {
     id: number;
     name: string;
+    city: string | null;
+    state: string | null;
 }
 
 export interface ShipmentStop {

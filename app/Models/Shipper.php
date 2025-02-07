@@ -22,4 +22,19 @@ class Shipper extends Model
     {
         return sprintf("%s", $this->name);
     }
+
+    public function loads()
+    {
+        return $this->hasMany(Load::class);
+    }
+
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
+
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
+    }
 }
