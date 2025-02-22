@@ -1,0 +1,16 @@
+{
+    "name": "My Plugin",
+    "slug": "MyPlugin",
+    "description": "This is an example plugin.",
+    "version": "1.0.0",
+    "author": "Your Name",
+    "require": [],
+    "providers": [
+        "Plugins\\MyPlugin\\Providers\\PluginServiceProvider"
+    ],
+    "migrations": "database/migrations",
+    "routes": "routes/web.php",
+    "assets": "public/assets",
+    "backend": true,
+    "frontend": true
+} 

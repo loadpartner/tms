@@ -33,6 +33,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Shipments\ShipmentController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Admin\PluginController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -131,6 +132,13 @@ Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function
     Route::post('contacts', CreateContact::class)->name('contacts.store');
     Route::put('contacts/{contact}', UpdateContact::class)->name('contacts.update');
     Route::delete('contacts/{contact}', DeleteContact::class)->name('contacts.destroy');
+});
+
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/plugins', [PluginController::class, 'index'])->name('plugins.index');
+    Route::post('/plugins', [PluginController::class, 'install'])->name('plugins.install');
+    Route::post('/plugins/{plugin}/activate', [PluginController::class, 'activate'])->name('plugins.activate');
+    Route::post('/plugins/{plugin}/deactivate', [PluginController::class, 'deactivate'])->name('plugins.deactivate');
 });
 
 require __DIR__ . '/auth.php';

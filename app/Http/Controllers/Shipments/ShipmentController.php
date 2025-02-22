@@ -21,6 +21,8 @@ use App\Models\Shipments\TrailerSize;
 use App\Models\Shipments\TrailerType;
 use App\Models\Customers\Customer;
 use Inertia\Inertia;
+use App\Events\ShipmentCreated;
+use Illuminate\Http\Request;
 
 class ShipmentController extends ResourceSearchController
 {
@@ -82,5 +84,15 @@ class ShipmentController extends ResourceSearchController
     public function destroy(Shipment $shipment)
     {
         //
+    }
+
+    public function store(Request $request)
+    {
+        $shipment = Shipment::create($request->all());
+
+        event(new ShipmentCreated($shipment)); // Dispatch the event
+
+        // ... rest of your logic, like returning a response ...
+        return response()->json(['shipment' => $shipment], 201);
     }
 }

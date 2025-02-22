@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use App\Enums\Permission;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Support\Facades\App;
+use App\Services\FrontendPluginRegistry;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,6 +41,7 @@ class HandleInertiaRequests extends Middleware
             'app' => [
                 'name' => config('app.name'),
             ],
+            'pluginSidebarMenuItems' => App::make(FrontendPluginRegistry::class)->getSidebarMenuItems(),
         ];
     }
 }
