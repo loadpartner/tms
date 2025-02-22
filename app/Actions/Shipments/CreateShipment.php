@@ -12,10 +12,12 @@ use Illuminate\Validation\Rule;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Nette\NotImplementedException;
+use App\Events\ShipmentCreated;
+use Lorisleiva\Actions\Concerns\AsJob;
 
 class CreateShipment
 {
-    use AsAction;
+    use AsAction, AsJob;
 
     public function handle(
         array $customerIds,
@@ -57,6 +59,8 @@ class CreateShipment
                 'appointment_at' => Carbon::parse($stopData['appointment_at']),
             ]);
         }
+
+        event(new ShipmentCreated($shipment));
 
         DB::commit();
 

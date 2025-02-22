@@ -21,6 +21,7 @@ import {
     SidebarRail,
 } from '@/Components/ui/sidebar';
 import { usePage } from '@inertiajs/react';
+import { PluginSidebarMenuItems } from '@/Components/PluginSidebarMenuItems';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const user = usePage().props.auth.user;
@@ -116,6 +117,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             </a>
                         </SidebarMenuButton>
                     )}
+
+                    {/* Plugin Sidebar Menu Items will be injected here */}
+                    <PluginSidebarMenuItems />
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
