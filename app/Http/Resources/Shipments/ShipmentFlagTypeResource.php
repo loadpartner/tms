@@ -21,20 +21,22 @@ class ShipmentFlagTypeResource extends JsonResource
     {
 
         if ($this->resource instanceof ShipmentFlagCustomType) {
+            $model = $this->resource;
             return [
-                'name' => $this->name,
-                'color' => $this->color,
-                'icon' => $this->icon,
-                'label' => $this->label,
+                'name' => $model->name,
+                'color' => $model->color,
+                'icon' => $model->icon,
+                'label' => $model->label,
             ];
         }
 
         if ($this->resource instanceof \App\Enums\Shipments\ShipmentFlagType) {
+            $enum = $this->resource;
             return [
-                'name' => $this->value,
-                'color' => $this->getColor(),
-                'icon' => $this->getIcon(),
-                'label' => $this->getLabel(),
+                'name' => $enum->value,
+                'color' => $enum->getColor(),
+                'icon' => $enum->getIcon(),
+                'label' => $enum->getLabel(),
             ];
         }
 

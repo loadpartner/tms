@@ -12,7 +12,6 @@ enum ShipmentFlagType: string
         return match ($this) {
             self::TRUCK_IS_LATE => 'Truck is late',
             self::TRUCK_IS_EMPTY => 'Truck is empty',
-            default => $this->value,
         };
     }
 
@@ -21,7 +20,6 @@ enum ShipmentFlagType: string
         return match ($this) {
             self::TRUCK_IS_LATE => 'red',
             self::TRUCK_IS_EMPTY => 'yellow',
-            default => 'gray',
         };
     }
 
@@ -30,7 +28,6 @@ enum ShipmentFlagType: string
         return match ($this) {
             self::TRUCK_IS_LATE => 'timer',
             self::TRUCK_IS_EMPTY => 'square-dashed',
-            default => 'flag',
         };
     }
 }
