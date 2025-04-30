@@ -34,7 +34,9 @@ use App\Actions\Notes\GetNotes;
 use App\Actions\Shipments\CancelShipment;
 use App\Actions\Shipments\CreateShipment;
 use App\Actions\Shipments\CreateShipmentCustomerRate;
+use App\Actions\Shipments\CreateShipmentFlag;
 use App\Actions\Shipments\DeleteShipmentCustomerRate;
+use App\Actions\Shipments\DeleteShipmentFlag;
 use App\Actions\Shipments\DispatchShipment;
 use App\Actions\Shipments\GetShipmentFinancials;
 use App\Actions\Shipments\SaveAccessorials;
@@ -201,6 +203,10 @@ Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function
     Route::delete('shipments/{shipment}/check-calls/{checkcall}', [\App\Http\Controllers\CheckCalls\CheckCallController::class, 'destroy'])->name('shipments.check-calls.destroy');
     Route::post('shipments/{shipment}/check-calls', \App\Actions\CheckCalls\CreateCheckCall::class)->name('shipments.check-calls.store');
 
+    // Shipment Flags routes
+    Route::post('shipments/{shipment}/flags', CreateShipmentFlag::class)->name('shipments.flags.store');
+    Route::delete('shipments/{shipment}/flags/{shipmentFlag}', DeleteShipmentFlag::class)->name('shipments.flags.destroy');
+    
     Route::get('locations/search', [LocationController::class, 'search'])->name('locations.search');
     Route::post('locations', CreateLocation::class)->name('locations.store');
 
