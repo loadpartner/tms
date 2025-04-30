@@ -631,6 +631,34 @@ class CreateShipment
 {
 }
 /**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, string $type)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, string $type)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, string $type)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, string $type)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, string $type)
+ * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, string $type)
+ * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, string $type)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, string $type)
+ * @method static \App\Models\Shipments\ShipmentFlag run(\App\Models\Shipments\Shipment $shipment, string $type)
+ */
+class CreateShipmentFlag
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ * @method static dispatchSync(\App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ * @method static dispatchNow(\App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ * @method static \App\Models\Shipments\ShipmentFlag run(\App\Models\Shipments\ShipmentFlag $shipmentFlag)
+ */
+class DeleteShipmentFlag
+{
+}
+/**
  * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment)
  * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment)
  * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment)

@@ -159,6 +159,14 @@ class Shipment extends Model implements HasStatesContract
         return $this->hasMany(CheckCall::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<ShipmentFlag, $this>
+     */
+    public function shipment_flags(): HasMany
+    {
+        return $this->hasMany(ShipmentFlag::class);
+    }
+
     public function getNextStopAttribute(): ?ShipmentStop
     {
         return $this->stops()->whereNull('arrived_at')->first();
