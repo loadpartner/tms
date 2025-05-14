@@ -164,7 +164,9 @@ class Shipment extends Model implements HasStatesContract
             $entities[] = $customer;
         }
 
-        $entities[] = $this->carrier;
+        if($this->carrier) {
+            $entities[] = $this->carrier;
+        }
         
         foreach($this->stops as $stop) {
             $entities[] = $stop->facility;

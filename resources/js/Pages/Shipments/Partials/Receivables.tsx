@@ -449,6 +449,10 @@ export default function Receivables({
                                                     className="pl-7"
                                                     value={receivable.rate}
                                                     onChange={(e) => {
+                                                        const newRate =
+                                                            parseFloat(
+                                                                e.target.value,
+                                                            );
                                                         setData({
                                                             ...data,
                                                             receivables:
@@ -458,11 +462,10 @@ export default function Receivables({
                                                                         index
                                                                             ? {
                                                                                   ...r,
-                                                                                  rate: parseFloat(
-                                                                                      e
-                                                                                          .target
-                                                                                          .value,
-                                                                                  ),
+                                                                                  rate: newRate,
+                                                                                  total:
+                                                                                      newRate *
+                                                                                      r.quantity,
                                                                               }
                                                                             : r,
                                                                 ),
@@ -483,6 +486,10 @@ export default function Receivables({
                                                 type="number"
                                                 value={receivable.quantity}
                                                 onChange={(e) => {
+                                                    const newQuantity =
+                                                        parseInt(
+                                                            e.target.value,
+                                                        );
                                                     setData({
                                                         ...data,
                                                         receivables:
@@ -492,11 +499,10 @@ export default function Receivables({
                                                                         ? {
                                                                               ...r,
                                                                               quantity:
-                                                                                  parseInt(
-                                                                                      e
-                                                                                          .target
-                                                                                          .value,
-                                                                                  ),
+                                                                                  newQuantity,
+                                                                              total:
+                                                                                  r.rate *
+                                                                                  newQuantity,
                                                                           }
                                                                         : r,
                                                             ),
@@ -774,6 +780,12 @@ export default function Receivables({
                                                                 onChange={(
                                                                     e,
                                                                 ) => {
+                                                                    const newRate =
+                                                                        parseFloat(
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                        );
                                                                     setData({
                                                                         ...data,
                                                                         receivables:
@@ -786,11 +798,10 @@ export default function Receivables({
                                                                                     index
                                                                                         ? {
                                                                                               ...r,
-                                                                                              rate: parseFloat(
-                                                                                                  e
-                                                                                                      .target
-                                                                                                      .value,
-                                                                                              ),
+                                                                                              rate: newRate,
+                                                                                              total:
+                                                                                                  newRate *
+                                                                                                  r.quantity,
                                                                                           }
                                                                                         : r,
                                                                             ),
@@ -818,6 +829,11 @@ export default function Receivables({
                                                                 receivable.quantity
                                                             }
                                                             onChange={(e) => {
+                                                                const newQuantity =
+                                                                    parseInt(
+                                                                        e.target
+                                                                            .value,
+                                                                    );
                                                                 setData({
                                                                     ...data,
                                                                     receivables:
@@ -831,11 +847,10 @@ export default function Receivables({
                                                                                     ? {
                                                                                           ...r,
                                                                                           quantity:
-                                                                                              parseInt(
-                                                                                                  e
-                                                                                                      .target
-                                                                                                      .value,
-                                                                                              ),
+                                                                                              newQuantity,
+                                                                                          total:
+                                                                                              r.rate *
+                                                                                              newQuantity,
                                                                                       }
                                                                                     : r,
                                                                         ),

@@ -43,4 +43,9 @@ class Customer extends Model
         /** Ignoring due to issue with pivot table returns not being supported by Larastan */
         return $this->belongsToMany(Facility::class, 'customer_facilities');
     }
+
+    public function receivables(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(\App\Models\Accounting\Receivable::class, 'payer');
+    }
 }
