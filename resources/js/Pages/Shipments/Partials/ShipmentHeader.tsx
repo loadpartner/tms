@@ -3,12 +3,21 @@ import DocumentPreviewDialog from '@/Components/DocumentPreviewDialog';
 import { Button } from '@/Components/ui/button';
 import { ConfirmDropdownMenuItem } from '@/Components/ui/confirm-dropdown-menu-item';
 import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/Components/ui/dialog';
+import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
 import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { useToast } from '@/hooks/UseToast';
 import { Document, Shipment } from '@/types';
 import { ShipmentState } from '@/types/enums';
@@ -21,6 +30,7 @@ import {
     FileText,
     MoreHorizontal,
     Pencil,
+    Receipt,
     Undo2,
     X,
 } from 'lucide-react';
@@ -29,6 +39,10 @@ import { useState } from 'react';
 export default function ShipmentHeader({ shipment }: { shipment: Shipment }) {
     const [editMode, setEditMode] = useState(false);
     const [showRateConDialog, setShowRateConDialog] = useState(false);
+    const [showInvoiceDialog, setShowInvoiceDialog] = useState(false);
+    const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(
+        null,
+    );
 
     const { toast } = useToast();
 
@@ -48,7 +62,7 @@ export default function ShipmentHeader({ shipment }: { shipment: Shipment }) {
         setShowRateConDialog(true);
     };
 
-    const downloadRateCon = (document: Document) => {
+    const downloadDocument = (document: Document) => {
         // Create a download link for the document
         const downloadUrl = route('documents.show', document.id);
 
@@ -126,6 +140,65 @@ export default function ShipmentHeader({ shipment }: { shipment: Shipment }) {
         );
     };
 
+    const openInvoiceDialog = () => {
+        setShowInvoiceDialog(true);
+    };
+
+    const regenerateInvoice = () => {
+        if (!selectedCustomerId) {
+            toast({
+                description: (
+                    <>
+                        <AlertCircle
+                            className="mr-2 inline h-4 w-4"
+                            color="red"
+                        />
+                        Please select a customer
+                    </>
+                ),
+            });
+            return;
+        }
+
+        post(
+            route('shipments.documents.generate-customer-invoice', {
+                shipment: shipment.id,
+                customer: selectedCustomerId,
+            }),
+            {
+                onSuccess: () => {
+                    toast({
+                        description: (
+                            <>
+                                <CheckCircle2
+                                    className="mr-2 inline h-4 w-4"
+                                    color="green"
+                                />
+                                Invoice generated successfully!
+                            </>
+                        ),
+                    });
+                    setShowInvoiceDialog(false);
+                },
+                onError: (error) => {
+                    console.error(error);
+                    toast({
+                        description: (
+                            <>
+                                <AlertCircle
+                                    className="mr-2 inline h-4 w-4"
+                                    color="red"
+                                />
+                                Failed to regenerate invoice! Please contact
+                                support.
+                            </>
+                        ),
+                    });
+                },
+            },
+        );
+    };
+
     return (
         <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
@@ -193,7 +266,7 @@ export default function ShipmentHeader({ shipment }: { shipment: Shipment }) {
                     shipment={shipment}
                     carrierId={shipment.carrier?.id}
                     carrierContacts={shipment.carrier?.contacts || []}
-                    buttonVariant="outline"
+                    buttonVariant="default"
                     buttonText="Check Call"
                 />
 
@@ -209,7 +282,7 @@ export default function ShipmentHeader({ shipment }: { shipment: Shipment }) {
                 )}
 
                 {shipment.latest_rate_confirmation ? (
-                    <Button onClick={viewRateCon}>
+                    <Button onClick={viewRateCon} variant={'outline'}>
                         <FileText className="mr-2 h-4 w-4" />
                         View Ratecon
                     </Button>
@@ -228,6 +301,10 @@ export default function ShipmentHeader({ shipment }: { shipment: Shipment }) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
+                        <DropdownMenuItem onClick={openInvoiceDialog}>
+                            <Receipt className="mr-2 h-4 w-4" />
+                            Regenerate Invoice
+                        </DropdownMenuItem>
                         {shipment.state !== ShipmentState.Canceled && (
                             <ConfirmDropdownMenuItem
                                 onConfirm={() => {
@@ -253,8 +330,64 @@ export default function ShipmentHeader({ shipment }: { shipment: Shipment }) {
                 document={shipment.latest_rate_confirmation}
                 open={showRateConDialog}
                 onOpenChange={setShowRateConDialog}
-                onDownload={downloadRateCon}
+                onDownload={downloadDocument}
             />
+
+            {/* Customer Selection Dialog */}
+            <Dialog
+                open={showInvoiceDialog}
+                onOpenChange={setShowInvoiceDialog}
+            >
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Regenerate Invoice</DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4">
+                        <p className="mb-4">
+                            Select a customer to generate an invoice:
+                        </p>
+                        <RadioGroup
+                            value={selectedCustomerId}
+                            onValueChange={(value: string) =>
+                                setSelectedCustomerId(value)
+                            }
+                        >
+                            {shipment.customers &&
+                            shipment.customers.length > 0 ? (
+                                shipment.customers.map((customer) => (
+                                    <div
+                                        key={customer.id}
+                                        className="mb-2 flex items-center space-x-2"
+                                    >
+                                        <RadioGroupItem
+                                            value={customer.id.toString()}
+                                            id={`customer-${customer.id}`}
+                                        />
+                                        <Label
+                                            htmlFor={`customer-${customer.id}`}
+                                        >
+                                            {customer.name}
+                                        </Label>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-muted-foreground">
+                                    No customers available for this shipment.
+                                </p>
+                            )}
+                        </RadioGroup>
+                    </div>
+                    <DialogFooter>
+                        <Button
+                            onClick={() => setShowInvoiceDialog(false)}
+                            variant="outline"
+                        >
+                            Cancel
+                        </Button>
+                        <Button onClick={regenerateInvoice}>Regenerate</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

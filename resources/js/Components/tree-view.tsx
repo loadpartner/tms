@@ -653,6 +653,7 @@ const TreeLeaf = React.forwardRef<
                 onTouchStart={onTouchStart}
                 onTouchEnd={onTouchEnd}
                 {...props}
+                title={item.name}
             >
                 <TreeIcon
                     item={item}

@@ -13,12 +13,22 @@ class UpdateCustomer
 
     public function handle(
         Customer $customer,
-        ?string $name = null
+        ?string $name = null,
+        ?int $net_pay_days = null,
+        ?int $billing_location_id = null,
+        ?string $dba_name = null,
+        ?string $invoice_number_schema = null,
+        ?int $billing_contact_id = null,
     ): Customer
     {
-        $customer->update(array_filter([
+        $customer->update([
             'name' => $name,
-        ], fn($value) => !is_null($value)));
+            'net_pay_days' => $net_pay_days,
+            'billing_location_id' => $billing_location_id,
+            'dba_name' => $dba_name,
+            'invoice_number_schema' => $invoice_number_schema,
+            'billing_contact_id' => $billing_contact_id,
+        ]);
 
         return $customer;
     }
@@ -28,6 +38,11 @@ class UpdateCustomer
         return $this->handle(
             customer: $customer,
             name: $request->validated('name'),
+            net_pay_days: $request->validated('net_pay_days'),
+            billing_location_id: $request->validated('billing_location_id'),
+            dba_name: $request->validated('dba_name'),
+            invoice_number_schema: $request->validated('invoice_number_schema'),
+            billing_contact_id: $request->validated('billing_contact_id'),
         );
     }
 
@@ -45,6 +60,11 @@ class UpdateCustomer
     {
         return [
             'name' => ['nullable', 'string', 'min:3', 'max:255'],
+            'net_pay_days' => ['nullable', 'integer', 'min:0', 'max:365'],
+            'billing_location_id' => ['nullable', 'integer', 'exists:locations,id'],
+            'dba_name' => ['nullable', 'string', 'max:255'],
+            'invoice_number_schema' => ['nullable', 'string', 'max:255'],
+            'billing_contact_id' => ['nullable', 'integer', 'exists:contacts,id'],
         ];
     }
 

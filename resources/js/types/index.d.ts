@@ -139,6 +139,12 @@ export interface Customer {
     id: number;
     name: string;
 
+    net_pay_days: number | null;
+    billing_location?: Location;
+    dba_name: string | null;
+    invoice_number_schema: string | null;
+    billing_contact?: Contact;
+
     documents?: Document[];
     document_folders?: DocumentFolder[];
 }

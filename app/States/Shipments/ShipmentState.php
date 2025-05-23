@@ -2,6 +2,7 @@
 
 namespace App\States\Shipments;
 
+use App\Events\Shipments\ShipmentStateChanged;
 use Spatie\ModelStates\State;
 use Spatie\ModelStates\StateConfig;
 
@@ -13,6 +14,7 @@ abstract class ShipmentState extends State
     {
         return parent::config()
             ->default(Pending::class)
+            ->stateChangedEvent(ShipmentStateChanged::class)
             ->allowTransitions(
                 [
                     // Support for normal happy path

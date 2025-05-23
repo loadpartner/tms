@@ -125,9 +125,9 @@
             <td>
                 <div class="box">
                     <strong>Rate Confirmation Details:</strong><br>
-                    Rate Con #: <strong>{{ $load_number ?? 'LOAD-00000' }}</strong><br>
+                    Rate Con #: <strong>{{ $load_number ?? 'PO-00000' }}</strong><br>
                     Date: {{ $date ?? date('m/d/Y') }}<br>
-                    Load #: {{ $load_number ?? 'LOAD-00000' }}
+                    Shipment #: {{ $load_number ?? 'PO-00000' }}
                 </div>
             </td>
         </tr>

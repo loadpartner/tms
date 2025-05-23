@@ -249,15 +249,15 @@ class DeleteCustomerFacility
 {
 }
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static dispatchSync(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static dispatchNow(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static dispatchAfterResponse(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \App\Models\Customers\Customer run(\App\Models\Customers\Customer $customer, ?string $name = null)
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static dispatchSync(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static dispatchNow(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static dispatchAfterResponse(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \App\Models\Customers\Customer run(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
  */
 class UpdateCustomer
 {
@@ -382,6 +382,20 @@ class UpdateDocument
 }
 namespace App\Actions\Documents\Generators;
 
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static mixed run(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ */
+class GenerateCustomerInvoice
+{
+}
 /**
  * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment)
  * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment)
