@@ -85,4 +85,15 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function updateLanguage(Request $request)
+    {
+        $validated = $request->validate([
+            'language_preference' => ['required', 'string', 'size:2'],
+        ]);
+
+        $request->user()->update($validated);
+
+        return back();
+    }
 }

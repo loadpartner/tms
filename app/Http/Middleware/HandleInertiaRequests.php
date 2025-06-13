@@ -45,6 +45,9 @@ class HandleInertiaRequests extends Middleware
             'config' => [
                 'enable_billing' => config('subscriptions.enable_billing'),
             ],
+            'translations' => [
+                'shipments' => trans('shipments'),
+            ],
         ];
     }
 }

@@ -14,8 +14,15 @@ import {
 import { Timezone } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
+import axios from 'axios';
 import { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+
+interface Language {
+    code: string;
+    name: string;
+    native_name: string;
+}
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -31,14 +38,19 @@ export default function UpdateProfileInformation({
     const [timezones, setTimezones] = useState<Timezone[]>(
         user?.timezone ? [{ id: 0, name: user?.timezone }] : [],
     );
+    const [languages, setLanguages] = useState<Language[]>([]);
+    const [selectedLanguage, setSelectedLanguage] = useState<string>(
+        user.language_preference || 'en',
+    );
 
-    const { data, setData, post, errors, processing, recentlySuccessful } =
+    const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
             email: user.email,
             photo: null as File | null,
             removePhoto: false as boolean,
             timezone: user.timezone,
+            language_preference: selectedLanguage,
         });
 
     const [photoPreview, setPhotoPreview] = useState<string | null>(
@@ -56,7 +68,17 @@ export default function UpdateProfileInformation({
             .then((data: Timezone[]) => {
                 setTimezones(data);
             });
-    }, [setTimezones]);
+
+        axios
+            .get<Language[]>(route('languages.index'))
+            .then((response) => {
+                setLanguages(response.data);
+                setSelectedLanguage(user.language_preference || 'en');
+            })
+            .catch((error) => {
+                console.error('Failed to fetch languages:', error);
+            });
+    }, [user.language_preference]);
 
     const onDrop = useCallback(
         (acceptedFiles: File[]) => {
@@ -92,7 +114,12 @@ export default function UpdateProfileInformation({
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('profile.update'), {});
+        patch(route('profile.update'), {});
+    };
+
+    const handleLanguageChange = (value: string) => {
+        setSelectedLanguage(value);
+        setData('language_preference', value);
     };
 
     return (
@@ -221,6 +248,32 @@ export default function UpdateProfileInformation({
                                     value={timezone.name}
                                 >
                                     {timezone.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                <div>
+                    <Label htmlFor="language">Language</Label>
+                    <Select
+                        value={selectedLanguage}
+                        onValueChange={handleLanguageChange}
+                    >
+                        <SelectTrigger>
+                            <SelectValue>
+                                {languages.find(
+                                    (lang) => lang.code === selectedLanguage,
+                                )?.native_name || 'Select a language'}
+                            </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            {languages.map((language) => (
+                                <SelectItem
+                                    key={language.code}
+                                    value={language.code}
+                                >
+                                    {language.native_name}
                                 </SelectItem>
                             ))}
                         </SelectContent>

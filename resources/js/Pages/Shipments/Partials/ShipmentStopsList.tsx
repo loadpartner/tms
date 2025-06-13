@@ -24,7 +24,8 @@ import {
 } from '@/lib/timezone';
 import { ShipmentStop, TimezoneData } from '@/types';
 import { StopType } from '@/types/enums';
-import { useForm } from '@inertiajs/react';
+import { PageProps as InertiaPageProps } from '@inertiajs/core';
+import { useForm, usePage } from '@inertiajs/react';
 import {
     ArrowDown,
     ArrowUp,
@@ -41,6 +42,29 @@ type FormErrors = {
     [key: `stops.${number}.${string}`]: string;
 };
 
+interface PageProps extends InertiaPageProps {
+    translations: {
+        shipments: {
+            stops: {
+                stop_type: string;
+                facility: string;
+                appointment_type: string;
+                appointment_time: string;
+                eta: string;
+                arrived_at: string;
+                loaded_at: string;
+                unloaded_at: string;
+                left_at: string;
+                reference_numbers: string;
+                special_instructions: string;
+                add_stop: string;
+                none: string;
+                not_set: string;
+            };
+        };
+    };
+}
+
 export default function ShipmentStopsList({
     shipmentId,
     stops,
@@ -48,6 +72,8 @@ export default function ShipmentStopsList({
     shipmentId: number;
     stops: ShipmentStop[];
 }) {
+    const { translations } = usePage<PageProps>().props;
+    const t = translations.shipments.stops;
     const [editMode, setEditMode] = useState(false);
     const { toast } = useToast();
     const [timezones, setTimezones] = useState<Record<string, TimezoneData>>(
@@ -179,7 +205,7 @@ export default function ShipmentStopsList({
                                     setData('stops', updatedStops);
                                 }}
                             >
-                                Add Stop
+                                {t.add_stop}
                             </Button>
                         )}
                     </div>
@@ -275,7 +301,7 @@ export default function ShipmentStopsList({
                                         {editMode ? (
                                             <>
                                                 <label className="text-sm font-medium">
-                                                    Stop Type
+                                                    {t.stop_type}
                                                 </label>
                                                 <Select
                                                     value={stop.stop_type}
@@ -350,7 +376,7 @@ export default function ShipmentStopsList({
                                     <div>
                                         <div className="flex items-center justify-between">
                                             <label className="text-sm font-medium">
-                                                Facility
+                                                {t.facility}
                                             </label>
                                             {editMode && (
                                                 <Button
@@ -441,7 +467,7 @@ export default function ShipmentStopsList({
                                     </div>
                                     <div>
                                         <label className="text-sm font-medium text-muted-foreground">
-                                            Appointment Type
+                                            {t.appointment_type}
                                         </label>
                                         {editMode ? (
                                             <>
@@ -503,13 +529,13 @@ export default function ShipmentStopsList({
                                         ) : (
                                             <p className="capitalize">
                                                 {stop.appointment_type ||
-                                                    'Not set'}
+                                                    t.not_set}
                                             </p>
                                         )}
                                     </div>
                                     <div>
                                         <label className="text-sm font-medium">
-                                            Appointment Time
+                                            {t.appointment_time}
                                         </label>
                                         {editMode ? (
                                             <>
@@ -571,7 +597,7 @@ export default function ShipmentStopsList({
                                         <>
                                             <div>
                                                 <label className="text-sm font-medium">
-                                                    ETA
+                                                    {t.eta}
                                                 </label>
                                                 {editMode ? (
                                                     <>
@@ -639,7 +665,7 @@ export default function ShipmentStopsList({
                                             </div>
                                             <div>
                                                 <label className="text-sm font-medium">
-                                                    Arrived At
+                                                    {t.arrived_at}
                                                 </label>
                                                 {editMode ? (
                                                     <>
@@ -710,8 +736,8 @@ export default function ShipmentStopsList({
                                             <div>
                                                 <label className="text-sm font-medium">
                                                     {stop.stop_type === 'pickup'
-                                                        ? 'Loaded At'
-                                                        : 'Unloaded At'}
+                                                        ? t.loaded_at
+                                                        : t.unloaded_at}
                                                 </label>
                                                 {editMode ? (
                                                     <>
@@ -781,7 +807,7 @@ export default function ShipmentStopsList({
                                             </div>
                                             <div>
                                                 <label className="text-sm font-medium">
-                                                    Left At
+                                                    {t.left_at}
                                                 </label>
                                                 {editMode ? (
                                                     <>
@@ -851,7 +877,7 @@ export default function ShipmentStopsList({
                                     )}
                                     <div className="col-span-2">
                                         <label className="text-sm font-medium">
-                                            Reference Numbers
+                                            {t.reference_numbers}
                                         </label>
                                         {editMode ? (
                                             <>
@@ -893,13 +919,13 @@ export default function ShipmentStopsList({
                                         ) : (
                                             <p>
                                                 {stop.reference_numbers ||
-                                                    'None'}
+                                                    t.none}
                                             </p>
                                         )}
                                     </div>
                                     <div className="col-span-2">
                                         <label className="text-sm font-medium">
-                                            Special Instructions
+                                            {t.special_instructions}
                                         </label>
                                         {editMode ? (
                                             <>
@@ -941,7 +967,7 @@ export default function ShipmentStopsList({
                                         ) : (
                                             <p>
                                                 {stop.special_instructions ||
-                                                    'None'}
+                                                    t.none}
                                             </p>
                                         )}
                                     </div>

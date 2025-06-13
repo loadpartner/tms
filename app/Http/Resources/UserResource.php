@@ -32,6 +32,7 @@ class UserResource extends JsonResource
             }),
             'current_organization_id' => $this->current_organization_id,
             'timezone' => $this->timezone,
+            'language_preference' => $this->language_preference,
         ];
     }
 }

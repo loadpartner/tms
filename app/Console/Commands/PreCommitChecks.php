@@ -153,9 +153,16 @@ class PreCommitChecks extends Command
         $this->info("Refreshing testing database...");
         
         try {
+            // Override the database configuration for testing
+            config([
+                'database.connections.sqlite.database' => ':memory:',
+                'database.default' => 'sqlite',
+            ]);
+            
             $this->call('migrate:fresh', [
                 '--env' => 'testing',
                 '--seed' => true,
+                '--database' => 'sqlite',
             ]);
             $this->info("Testing database refreshed successfully");
         } catch (\Exception $e) {

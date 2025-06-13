@@ -33,6 +33,7 @@ class User extends Authenticatable
         'current_organization_id',
         'profile_photo_path',
         'timezone',
+        'language_preference',
     ];
 
     /**

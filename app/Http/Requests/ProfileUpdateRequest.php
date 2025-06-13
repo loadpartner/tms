@@ -28,6 +28,7 @@ class ProfileUpdateRequest extends FormRequest
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'removePhoto' => ['nullable', 'boolean'],
             'timezone' => ['nullable', 'string', 'max:255'],
+            'language_preference' => ['required', 'string', 'size:2'],
         ];
     }
 }

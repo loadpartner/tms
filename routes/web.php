@@ -61,6 +61,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Shipments\ShipmentController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TimezoneController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -92,8 +93,10 @@ Route::get('/products', function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/language', [ProfileController::class, 'updateLanguage'])->name('profile.language');
+    Route::get('/languages', [LanguageController::class, 'index'])->name('languages.index');
 
     Route::resource('organizations', OrganizationController::class);
 

@@ -7,6 +7,7 @@ export interface User {
     organizations: Organization[];
     profile_photo_url?: string;
     timezone?: string;
+    language_preference?: string;
 }
 
 export type PageProps<
