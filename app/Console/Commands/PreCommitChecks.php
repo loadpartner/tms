@@ -12,7 +12,7 @@ class PreCommitChecks extends Command
      *
      * @var string
      */
-    protected $signature = 'dev:check';
+    protected $signature = 'dev:check {--refresh-db : Refresh the testing database before running tests}';
 
     /**
      * The console command description.
@@ -49,9 +49,20 @@ class PreCommitChecks extends Command
         
         foreach ($this->commands as $check => $command) {
             $this->newLine(2);
+            $env = [];
+            
+            // Refresh testing database before running tests
+            if ($check === 'tests:php') {
+                $this->refreshTestingDatabase();
+                $env = [
+                    'APP_ENV' => 'testing',
+                    'DB_CONNECTION' => 'sqlite',
+                    'DB_DATABASE' => ':memory:',
+                ];
+            }
+            
             $this->info("========== Running $check ==========");
             
-            $env = $check === 'tests:php' ? ['APP_ENV' => 'testing'] : [];
             $successCallback = $this->getSuccessCallback($check);
             
             $this->runProcess(explode(' ', $command), $check, $successCallback, $env);
@@ -69,7 +80,10 @@ class PreCommitChecks extends Command
             $process->setTty($tty);
             
             if ($env) {
-                $process->setEnv($env);
+                // Merge with current environment to preserve existing variables
+                $currentEnv = $_ENV + $_SERVER;
+                $mergedEnv = array_merge($currentEnv, $env);
+                $process->setEnv($mergedEnv);
             }
 
             $output = '';
@@ -132,5 +146,27 @@ class PreCommitChecks extends Command
         
         $this->newLine();
         $this->comment("Please check messages above for any errors or warnings");
+    }
+
+    protected function refreshTestingDatabase(): void
+    {
+        $this->info("Refreshing testing database...");
+        
+        try {
+            // Override the database configuration for testing
+            config([
+                'database.connections.sqlite.database' => ':memory:',
+                'database.default' => 'sqlite',
+            ]);
+            
+            $this->call('migrate:fresh', [
+                '--env' => 'testing',
+                '--seed' => true,
+                '--database' => 'sqlite',
+            ]);
+            $this->info("Testing database refreshed successfully");
+        } catch (\Exception $e) {
+            $this->error("Failed to refresh testing database: " . $e->getMessage());
+        }
     }
 }

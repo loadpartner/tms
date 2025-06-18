@@ -1,6 +1,6 @@
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
-import { Skeleton } from '@/Components/ui/skeleton';
+import { Loading } from '@/Components/ui/loading';
 import { Facility } from '@/types';
 import axios from 'axios';
 import { Search } from 'lucide-react';
@@ -74,7 +74,10 @@ export default function FacilityList({
             </div>
             {isLoading ? (
                 <>
-                    <Skeleton className="mx-auto h-[200px] w-1/2 rounded-md" />
+                    <Loading
+                        className="mx-auto h-[200px] w-full"
+                        text="Loading..."
+                    />
                 </>
             ) : (
                 <>

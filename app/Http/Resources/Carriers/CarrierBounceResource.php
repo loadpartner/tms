@@ -29,7 +29,7 @@ class CarrierBounceResource extends JsonResource
             'shipment_id' => $this->shipment_id,
             'carrier_id' => $this->carrier_id,
             'driver_id' => $this->driver_id,
-            'bounce_type' => $this->bounce_type,
+            'bounce_cause' => $this->bounce_cause,
             'bounced_by' => $this->bounced_by,
             'reason' => $this->reason,
             'created_at' => $this->created_at,

@@ -39,7 +39,7 @@ export default function CreateOrganization({ status }: { status?: string }) {
                                 type="text"
                                 placeholder="Acme Inc."
                                 required
-                                className="bg-white"
+                                className=""
                                 value={data.name}
                                 onChange={(e) =>
                                     setData('name', e.target.value)

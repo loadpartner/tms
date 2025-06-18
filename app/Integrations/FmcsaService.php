@@ -14,5 +14,4 @@ class FmcsaService extends FmcsaSafer
     {
         parent::__construct(config('fmcsa.api_key'));
     }
-
 }

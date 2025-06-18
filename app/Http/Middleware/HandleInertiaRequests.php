@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Actions\IntegrationSettings\GetFrontendIntegrationSettings;
 use App\Enums\Permission;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -39,6 +40,13 @@ class HandleInertiaRequests extends Middleware
             ],
             'app' => [
                 'name' => config('app.name'),
+            ], 
+            'integration_settings' => GetFrontendIntegrationSettings::run(),
+            'config' => [
+                'enable_billing' => config('subscriptions.enable_billing'),
+            ],
+            'translations' => [
+                'shipments' => trans('shipments'),
             ],
         ];
     }

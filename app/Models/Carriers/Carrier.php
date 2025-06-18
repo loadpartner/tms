@@ -4,6 +4,7 @@ namespace App\Models\Carriers;
 
 use App\Http\Resources\Carriers\CarrierResource;
 use App\Models\Location;
+use App\Traits\HasAliases;
 use App\Traits\HasContacts;
 use App\Traits\HasDocuments;
 use App\Traits\HasOrganization;
@@ -16,7 +17,7 @@ use Laravel\Scout\Searchable;
 
 class Carrier extends Model
 {
-    use HasFactory, HasOrganization, Searchable, HasContacts, HasDocuments;
+    use HasFactory, HasOrganization, Searchable, HasContacts, HasDocuments, HasAliases;
 
     protected $fillable = [
         'organization_id',
@@ -32,6 +33,11 @@ class Carrier extends Model
     ];
 
     protected $appends = [ 'selectable_label' ];
+
+    public $aliasName = 'carrier';
+    public $aliasProperties = [
+        'name' => 'name',
+    ];
 
     public function getSelectableLabelAttribute() : string
     {

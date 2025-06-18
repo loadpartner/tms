@@ -9,6 +9,7 @@ export enum StopType {
 }
 
 export enum Notable {
+    CheckCall = 'check_call',
     Shipment = 'shipment',
     Customer = 'customer',
     Carrier = 'carrier',
@@ -38,4 +39,17 @@ export enum Documentable {
     Customer = 'customer',
     Carrier = 'carrier',
     Facility = 'facility',
+}
+
+export enum ContactMethodType {
+    Phonecall = 'phonecall',
+    Email = 'email',
+    Text = 'text',
+    Fax = 'fax',
+    Web = 'web',
+    Other = 'other',
+}
+
+export enum Currency {
+    UnitedStatesDollar = 'usd',
 }

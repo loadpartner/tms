@@ -85,4 +85,33 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function updateLanguage(Request $request)
+    {
+        $validated = $request->validate([
+            'language_preference' => ['required', 'string', 'size:2'],
+        ]);
+
+        $request->user()->update($validated);
+
+        return back();
+    }
+
+    /**
+     * Serve a profile photo
+     */
+    public function getPhoto(Request $request, $userId, $filename)
+    {
+        $path = "profile-photos/{$userId}/{$filename}";
+        
+        if (!Storage::disk('public')->exists($path)) {
+            abort(404);
+        }
+        
+        $filePath = Storage::disk('public')->path($path);
+        
+        return response()->file($filePath, [
+            'Cache-Control' => 'public, max-age=31536000', // Cache for 1 year
+        ]);
+    }
 }

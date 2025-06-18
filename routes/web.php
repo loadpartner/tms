@@ -1,8 +1,8 @@
 <?php
 
-use App\Actions\Accounting\GetAccessorialTypes;
-use App\Actions\Accounting\GetCarrierRateTypes;
-use App\Actions\Accounting\GetCustomerRateTypes;
+use App\Actions\Accounting\GetRateTypes;
+use App\Actions\Accounting\SavePayables;
+use App\Actions\Accounting\SaveReceivables;
 use App\Actions\Carriers\BounceCarrier;
 use App\Actions\Carriers\CreateCarrier;
 use App\Actions\Carriers\CreateCarrierFromSaferReport;
@@ -17,32 +17,39 @@ use App\Actions\Customers\CreateCustomer;
 use App\Actions\Customers\CreateCustomerFacility;
 use App\Actions\Customers\DeleteCustomerFacility;
 use App\Actions\Customers\UpdateCustomer;
+use App\Actions\Dashboard\RecentCarriersCard;
+use App\Actions\Dashboard\RecentShipmentsCard;
 use App\Actions\Documents\CreateDocument;
 use App\Actions\Documents\DeleteDocument;
+use App\Actions\Documents\Generators\GenerateCustomerInvoice;
+use App\Actions\Documents\Generators\GenerateRateConfirmation;
 use App\Actions\Documents\GetDocument;
 use App\Actions\Documents\GetDocumentsWithFolders;
 use App\Actions\Documents\UpdateDocument;
 use App\Actions\Facilities\CreateFacility;
+use App\Actions\IntegrationSettings\DeleteIntegrationSetting;
+use App\Actions\IntegrationSettings\SetIntegrationSetting;
 use App\Actions\Locations\CreateLocation;
 use App\Actions\Notes\CreateNote;
 use App\Actions\Notes\DeleteNote;
 use App\Actions\Notes\GetNotes;
+use App\Actions\Organizations\UpdateOrganization;
 use App\Actions\Shipments\CancelShipment;
 use App\Actions\Shipments\CreateShipment;
-use App\Actions\Shipments\CreateShipmentCustomerRate;
-use App\Actions\Shipments\DeleteShipmentCustomerRate;
 use App\Actions\Shipments\DispatchShipment;
-use App\Actions\Shipments\GetShipmentFinancials;
-use App\Actions\Shipments\SaveAccessorials;
-use App\Actions\Shipments\SaveShipmentCarrierRates;
-use App\Actions\Shipments\SaveShipmentCustomerRates;
+use App\Actions\Shipments\GetShipmentAccounting;
+use App\Actions\Shipments\UncancelShipment;
 use App\Actions\Shipments\UpdateShipmentCarrierDetails;
-use App\Actions\Shipments\UpdateShipmentCustomerRate;
 use App\Actions\Shipments\UpdateShipmentGeneral;
 use App\Actions\Shipments\UpdateShipmentNumber;
 use App\Actions\Shipments\UpdateShipmentCustomers;
 use App\Actions\Shipments\UpdateShipmentStops;
+use App\Actions\SubmitFeedback;
+use App\Actions\Subscriptions\NewUserSeatsSubscription;
+use App\Actions\Subscriptions\RedirectToBillingPortal;
+use App\Actions\Subscriptions\UpdateUserSeatsSubscription;
 use App\Actions\ZipToTimezone;
+use App\Enums\Subscriptions\SubscriptionType;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FacilityController;
@@ -54,9 +61,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Shipments\ShipmentController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TimezoneController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::post('/feedback', SubmitFeedback::class)->name('feedback.submit');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -65,13 +75,29 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
+
+Route::get('/products', function () {
+    // Check if billing is enabled
+    if (!config('subscriptions.enable_billing')) {
+        abort(403, 'Billing is disabled');
+    }
+
+    return Inertia::render('Subscriptions/Products',
+        [
+            'hasSubscription' => current_organization()?->subscribed(SubscriptionType::USER_SEAT->value)
+        ]
+    );
+})->name('products-list');
 
 Route::middleware('auth')->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/language', [ProfileController::class, 'updateLanguage'])->name('profile.language');
+    Route::get('/profile-photos/{userId}/{filename}', [ProfileController::class, 'getPhoto'])->name('profile.photo');
+    Route::get('/languages', [LanguageController::class, 'index'])->name('languages.index');
 
     Route::resource('organizations', OrganizationController::class);
 
@@ -81,18 +107,16 @@ Route::middleware('auth')->group(function () {
     ])->only(['show']);
 });
 
+Route::middleware(['auth', 'organization-assigned'])->group(function() {
+    Route::get('subscriptions/new', NewUserSeatsSubscription::class)->name('subscriptions.new');
+    Route::get('subscriptions/manage', RedirectToBillingPortal::class)->name('subscriptions.manage');
+});
 
-Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function () {
+Route::middleware(['auth', 'verified', 'organization-assigned', 'active-subscription'])->group(function () {
 
     Route::prefix('accounting')->name('accounting.')->group(function() {
-        Route::get('customer-rate-types', GetCustomerRateTypes::class)->name('customer-rate-types.index');
-        Route::get('carrier-rate-types', GetCarrierRateTypes::class)->name('carrier-rate-types.index');
-        Route::get('accessorial-types', GetAccessorialTypes::class)->name('accessorial-types.index');
+        Route::get('rate-types', GetRateTypes::class)->name('rate-types.index');
     });
-
-    Route::get('dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
 
     Route::get('timezones/search', [TimezoneController::class, 'search'])->name('timezones.search');
     Route::get('timezones/zipcode', ZipToTimezone::class)->name('timezones.zipcode');
@@ -108,6 +132,24 @@ Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function
 
     Route::post('organizations/{organization}/switch', [OrganizationController::class, 'switchOrganization'])->name('organizations.switch');
 
+    Route::get('organizations/{organization}/users', [OrganizationController::class, 'showUsers'])->name('organizations.users');
+    Route::get('organizations/{organization}/roles', [OrganizationController::class, 'showRoles'])->name('organizations.roles');
+    Route::get('organizations/{organization}/settings', [OrganizationController::class, 'showSettings'])->name('organizations.settings');
+    Route::put('organizations/{organization}/settings', UpdateOrganization::class)->name('organizations.settings.update');
+    Route::get('organizations/{organization}/billing', [OrganizationController::class, 'showBilling'])->name('organizations.billing');
+    Route::put('organizations/{organization}/billing/update-seats', UpdateUserSeatsSubscription::class)->name('organizations.billing.update-seats');
+    
+    Route::get('organizations/{organization}/document-templates-page', [OrganizationController::class, 'showDocumentTemplates'])->name('organizations.document-templates-page');
+    Route::get('organizations/{organization}/integration-settings', [OrganizationController::class, 'showIntegrationSettings'])->name('organizations.integration-settings');
+    Route::post('organizations/{organization}/integration-settings', SetIntegrationSetting::class)->name('organizations.integration-settings.store');
+    Route::delete('organizations/{organization}/integration-settings/{setting}', DeleteIntegrationSetting::class)->name('organizations.integration-settings.destroy');
+
+    // Document Templates routes
+    Route::get('organizations/{organization}/document-templates', \App\Actions\DocumentTemplates\GetDocumentTemplates::class)->name('organizations.document-templates.index');
+    Route::get('organizations/{organization}/document-templates/{documentTemplate}', \App\Actions\DocumentTemplates\GetDocumentTemplate::class)->name('organizations.document-templates.show');
+    Route::post('organizations/{organization}/document-templates', \App\Actions\DocumentTemplates\SaveDocumentTemplate::class)->name('organizations.document-templates.store');
+    Route::post('document-templates/validate', \App\Actions\DocumentTemplates\ValidateTemplate::class)->name('document-templates.validate');
+    Route::get('document-templates/default/{templateType}', \App\Actions\DocumentTemplates\GetDefaultTemplate::class)->name('document-templates.default');
 
     Route::prefix('organizations/{organization}/permissions')->group(function () {
         Route::post('role', [PermissionController::class, 'storeRole'])->name('organizations.permissions.role.store');
@@ -145,6 +187,14 @@ Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function
     Route::get('customers/{customer}/facilities', [CustomerController::class, 'facilities'])->name('customers.facilities.index');
     Route::delete('customers/{customer}/facilities/{facility}', DeleteCustomerFacility::class)->name('customers.facilities.destroy');
 
+    Route::get('dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::name('dashboard.cards.')->prefix('dashboard/cards')->group(function() {
+        Route::get('/recent-shipments', RecentShipmentsCard::class)->name('recent-shipments');
+        Route::get('/recent-carriers', RecentCarriersCard::class)->name('recent-carriers');
+    });
 
     Route::name('documents.')->prefix('documents')->group(function () {
         Route::post('/', CreateDocument::class)->name('store');
@@ -169,18 +219,26 @@ Route::middleware(['auth', 'verified', 'organization-assigned'])->group(function
     Route::patch('shipments/{shipment}/stops', UpdateShipmentStops::class)->name('shipments.updateStops');
     Route::patch('shipments/{shipment}/dispatch', DispatchShipment::class)->name('shipments.dispatch');
     Route::patch('shipments/{shipment}/cancel', CancelShipment::class)->name('shipments.cancel');
+    Route::patch('shipments/{shipment}/uncancel', UncancelShipment::class)->name('shipments.uncancel');
     Route::post('shipments/{shipment}/bounce', BounceCarrier::class)->name('shipments.bounce');
 
-    Route::get('shipments/{shipment}/financials', GetShipmentFinancials::class)->name('shipments.financials');
-    Route::post('shipments/{shipment}/financials/customer-rates', SaveShipmentCustomerRates::class)->name('shipments.financials.customer-rates');
-    Route::post('shipments/{shipment}/financials/carrier-rates', SaveShipmentCarrierRates::class)->name('shipments.financials.carrier-rates');
-    Route::post('shipments/{shipment}/financials/accessorials', SaveAccessorials::class)->name('shipments.financials.accessorials');
+    Route::get('shipments/{shipment}/accounting', GetShipmentAccounting::class)->name('shipments.accounting');
+    Route::post('shipments/{shipment}/accounting/payables', SavePayables::class)->name('shipments.accounting.payables');
+    Route::post('shipments/{shipment}/accounting/receivables', SaveReceivables::class)->name('shipments.accounting.receivables');
+
+    Route::post('shipments/{shipment}/documents/generate-rate-con', GenerateRateConfirmation::class)->name('shipments.documents.generate-rate-confirmation');
+    Route::post('shipments/{shipment}/documents/generate-customer-invoice/{customer}', GenerateCustomerInvoice::class)->name('shipments.documents.generate-customer-invoice');
 
     Route::get('bounce-reasons', [CarrierController::class, 'bounceReasons'])->name('bounce-reasons');
 
     Route::delete('notes/{note}', DeleteNote::class)->name('notes.destroy');
     Route::get('notes/{notableType}/{notableId}', GetNotes::class)->name('notes.index');
     Route::post('notes/{notableType}/{notableId}', CreateNote::class)->name('notes.store');
+
+    // Check Calls routes
+    Route::get('shipments/{shipment}/check-calls', [\App\Http\Controllers\CheckCalls\CheckCallController::class, 'index'])->name('shipments.check-calls.index');
+    Route::delete('shipments/{shipment}/check-calls/{checkcall}', [\App\Http\Controllers\CheckCalls\CheckCallController::class, 'destroy'])->name('shipments.check-calls.destroy');
+    Route::post('shipments/{shipment}/check-calls', \App\Actions\CheckCalls\CreateCheckCall::class)->name('shipments.check-calls.store');
 
     Route::get('locations/search', [LocationController::class, 'search'])->name('locations.search');
     Route::post('locations', CreateLocation::class)->name('locations.store');

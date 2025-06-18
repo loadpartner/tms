@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Resources\ContactResource;
+use App\Traits\HasAliases;
 use App\Traits\HasOrganization;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -10,7 +11,7 @@ use Laravel\Scout\Searchable;
 
 class Contact extends Model
 {
-    use HasOrganization, Searchable;
+    use HasOrganization, Searchable, HasAliases;
 
     protected $fillable = [
         'organization_id',
@@ -26,6 +27,15 @@ class Contact extends Model
     ];
 
     protected $appends = [ 'selectable_label' ];
+
+    public $aliasName = 'contact';
+    public $aliasProperties = [
+        'name' => 'name',
+        'email' => 'email',
+        'mobile_phone' => 'mobile_phone',
+        'office_phone' => 'office_phone',
+        'office_phone_extension' => 'office_phone_extension',
+    ];
 
     public function getSelectableLabelAttribute() : string
     {

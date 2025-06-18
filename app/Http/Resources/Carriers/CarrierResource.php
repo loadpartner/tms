@@ -4,6 +4,7 @@ namespace App\Http\Resources\Carriers;
 
 use App\Http\Resources\LocationResource;
 use App\Http\Resources\Carriers\CarrierSaferReportResource;
+use App\Http\Resources\ContactResource;
 use App\Http\Resources\Documents\DocumentFolderResource;
 use App\Http\Resources\Documents\DocumentResource;
 use Illuminate\Http\Request;
@@ -44,6 +45,8 @@ class CarrierResource extends JsonResource
             'safer_report' => $this->whenLoaded('safer_report', function () {
                 return new CarrierSaferReportResource($this->safer_report);
             }),
+
+            'contacts' => $this->whenLoaded('contacts', ContactResource::collection($this->contacts)),
 
             'documents' => $this->whenLoaded('documents', DocumentResource::collection($this->documents)),
             'document_folders' => $this->whenLoaded('documents', DocumentFolderResource::collection($this->getAllDocumentFolders()))

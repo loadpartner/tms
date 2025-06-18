@@ -117,13 +117,13 @@ export default function FacilityDetails({ facility }: { facility: Facility }) {
                             />
                             <button
                                 onClick={handleSave}
-                                className="p-1 text-confirm-600 hover:text-confirm-700"
+                                className="p-1 text-success hover:text-success/75"
                             >
                                 <Check className="h-5 w-5" />
                             </button>
                             <button
                                 onClick={handleCancel}
-                                className="p-1 text-cancel-600 hover:text-cancel-700"
+                                className="p-1 text-destructive hover:text-destructive/75"
                             >
                                 <X className="h-5 w-5" />
                             </button>

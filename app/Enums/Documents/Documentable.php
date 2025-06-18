@@ -57,6 +57,7 @@ enum Documentable: string
                 DocumentFolder::BOLS,
                 DocumentFolder::CUSTOMER_INVOICE,
                 DocumentFolder::CARRIER_BILLS,
+                DocumentFolder::CYA,
             ],
             self::CUSTOMER => [],
             self::CARRIER => [],

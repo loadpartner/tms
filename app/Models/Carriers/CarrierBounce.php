@@ -2,7 +2,6 @@
 
 namespace App\Models\Carriers;
 
-use App\Enums\Carriers\BounceType;
 use App\Models\Carriers\Carrier;
 use App\Models\Contact;
 use App\Models\Shipments\Shipment;
@@ -17,7 +16,7 @@ class CarrierBounce extends Model
         'carrier_id',
         'shipment_id',
         'driver_id',
-        'bounce_type',
+        'bounce_cause',
         'reason',
         'bounced_by',
     ];

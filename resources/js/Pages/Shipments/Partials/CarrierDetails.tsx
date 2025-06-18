@@ -19,7 +19,15 @@ import { Textarea } from '@/Components/ui/textarea';
 import { useToast } from '@/hooks/UseToast';
 import { Shipment } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { Check, CheckCircle2, Ghost, Pencil, Truck, X } from 'lucide-react';
+import {
+    Check,
+    CheckCircle2,
+    ExternalLink,
+    Ghost,
+    Pencil,
+    Truck,
+    X,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function CarrierDetails({ shipment }: { shipment: Shipment }) {
@@ -115,7 +123,21 @@ export default function CarrierDetails({ shipment }: { shipment: Shipment }) {
                             allowUnselect={false}
                         />
                     ) : (
-                        <p>{shipment.carrier?.name ?? '-'}</p>
+                        <>
+                            {shipment.carrier?.id ? (
+                                <a
+                                    target="external"
+                                    href={route('carriers.show', {
+                                        carrier: shipment.carrier.id,
+                                    })}
+                                >
+                                    {shipment.carrier?.name}
+                                    <ExternalLink className="ml-1 inline h-4 w-4" />
+                                </a>
+                            ) : (
+                                <p className="text-muted-foreground">-</p>
+                            )}
+                        </>
                     )}
                 </div>
                 <div className="flex flex-col gap-2">
@@ -152,10 +174,11 @@ export default function CarrierDetails({ shipment }: { shipment: Shipment }) {
                 <div className="flex">
                     {!editMode && shipment.carrier?.id && (
                         <Button
-                            variant="destructive"
+                            variant="ghost"
                             onClick={() => {
                                 setBounceModalOpen(true);
                             }}
+                            className="text-destructive"
                         >
                             <Ghost className="h-4 w-4" />
                             Bounce
@@ -193,7 +216,7 @@ function BounceCarrierModal({
     const [bounceReasons, setBounceReasons] = useState<string[]>([]);
 
     const { post, setData, data, errors, reset, clearErrors } = useForm({
-        bounce_type: '',
+        bounce_cause: '',
         reason: '',
     });
 
@@ -220,16 +243,16 @@ function BounceCarrierModal({
                 <div className="space-y-2">
                     <div className="flex flex-col gap-2">
                         <label className="text-sm font-medium">
-                            Bounce Type
+                            Bounce Cause
                         </label>
                         <Select
-                            value={data.bounce_type}
+                            value={data.bounce_cause}
                             onValueChange={(value) =>
-                                setData('bounce_type', value)
+                                setData('bounce_cause', value)
                             }
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Select a bounce type" />
+                                <SelectValue placeholder="Select a bounce cause" />
                             </SelectTrigger>
                             <SelectContent>
                                 {bounceReasons.length > 0 &&
@@ -240,10 +263,12 @@ function BounceCarrierModal({
                                     ))}
                             </SelectContent>
                         </Select>
-                        <InputError message={errors.bounce_type} />
+                        <InputError message={errors.bounce_cause} />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label className="text-sm font-medium">Reason</label>
+                        <label className="text-sm font-medium">
+                            Reason (optional)
+                        </label>
                         <Textarea
                             value={data.reason}
                             onChange={(e) => setData('reason', e.target.value)}

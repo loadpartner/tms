@@ -264,6 +264,33 @@ function RoleForm({
                                 <Label htmlFor="permissions">Permissions</Label>
                                 <InputError message={errors.permissions} />
                                 <div className="grid gap-2">
+                                    <div className="mb-2 flex space-x-2 border-b pb-2">
+                                        <Checkbox
+                                            id="select-all-permissions"
+                                            checked={
+                                                data.permissions.length ===
+                                                permissions.length
+                                            }
+                                            onCheckedChange={(checked) => {
+                                                if (checked) {
+                                                    setData(
+                                                        'permissions',
+                                                        permissions.map(
+                                                            (p) => p.id,
+                                                        ),
+                                                    );
+                                                } else {
+                                                    setData('permissions', []);
+                                                }
+                                            }}
+                                        />
+                                        <Label
+                                            htmlFor="select-all-permissions"
+                                            className="cursor-pointer font-bold"
+                                        >
+                                            Select All Permissions
+                                        </Label>
+                                    </div>
                                     {permissions.map((permission) => (
                                         <div
                                             key={permission.id}
@@ -297,6 +324,7 @@ function RoleForm({
                                             />
                                             <Label
                                                 htmlFor={`permissions[${permission.id}]`}
+                                                className="cursor-pointer"
                                             >
                                                 {permission.name}
                                             </Label>
@@ -357,6 +385,7 @@ function RoleForm({
                                                 />
                                                 <Label
                                                     htmlFor={`users[${user.id}]`}
+                                                    className="cursor-pointer"
                                                 >
                                                     {user.name} - {user.email}
                                                 </Label>

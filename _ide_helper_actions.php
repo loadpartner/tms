@@ -13,49 +13,49 @@ namespace App\Actions\Accounting;
  * @method static dispatchAfterResponse()
  * @method static \Illuminate\Database\Eloquent\Collection run()
  */
-class GetAccessorialTypes
+class GetRateTypes
 {
 }
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob()
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob()
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch()
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean)
- * @method static dispatchSync()
- * @method static dispatchNow()
- * @method static dispatchAfterResponse()
- * @method static \Illuminate\Database\Eloquent\Collection run()
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, array $payables)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, array $payables)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, array $payables)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $payables)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $payables)
+ * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, array $payables)
+ * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, array $payables)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, array $payables)
+ * @method static \Illuminate\Support\Collection run(\App\Models\Shipments\Shipment $shipment, array $payables)
  */
-class GetCarrierRateTypes
+class SavePayables
 {
 }
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob()
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob()
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch()
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean)
- * @method static dispatchSync()
- * @method static dispatchNow()
- * @method static dispatchAfterResponse()
- * @method static \Illuminate\Database\Eloquent\Collection run()
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, array $receivables)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, array $receivables)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, array $receivables)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $receivables)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $receivables)
+ * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, array $receivables)
+ * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, array $receivables)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, array $receivables)
+ * @method static \Illuminate\Support\Collection run(\App\Models\Shipments\Shipment $shipment, array $receivables)
  */
-class GetCustomerRateTypes
+class SaveReceivables
 {
 }
 namespace App\Actions\Carriers;
 
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
- * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
- * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
- * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
- * @method static \App\Models\Carriers\CarrierBounce run(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceType|string $bounceType, ?string $reason = null)
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
+ * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
+ * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
+ * @method static \App\Models\Carriers\CarrierBounce run(\App\Models\Shipments\Shipment $shipment, \App\Enums\Carriers\BounceCause|string $bounceCause, ?string $reason = null)
  */
 class BounceCarrier
 {
@@ -128,6 +128,22 @@ class FmcsaNameLookup
  * @method static \App\Models\Carriers\Carrier run(\App\Models\Carriers\Carrier $carrier, ?string $name = null, ?string $mc_number = null, ?string $dot_number = null, ?int $physical_location_id = null, ?string $contact_email = null, ?string $contact_phone = null)
  */
 class UpdateCarrierGeneral
+{
+}
+namespace App\Actions\CheckCalls;
+
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ * @method static dispatchSync(int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ * @method static dispatchNow(int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ * @method static dispatchAfterResponse(int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ * @method static \App\Models\CheckCalls\CheckCall run(int $shipmentId, ?string $eta, ?int $reportedTrailerTemp, string $contactName, ?\App\Enums\ContactMethodType $contactMethod, ?string $contactMethodDetail, ?bool $isLate, ?bool $isTruckEmpty, ?string $note, ?string $arrivedAt, ?string $leftAt, ?string $loadedUnloadedAt)
+ */
+class CreateCheckCall
 {
 }
 namespace App\Actions\Contacts;
@@ -233,17 +249,47 @@ class DeleteCustomerFacility
 {
 }
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static dispatchSync(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static dispatchNow(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static dispatchAfterResponse(\App\Models\Customers\Customer $customer, ?string $name = null)
- * @method static \App\Models\Customers\Customer run(\App\Models\Customers\Customer $customer, ?string $name = null)
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static dispatchSync(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static dispatchNow(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static dispatchAfterResponse(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
+ * @method static \App\Models\Customers\Customer run(\App\Models\Customers\Customer $customer, ?string $name = null, ?int $net_pay_days = null, ?int $billing_location_id = null, ?string $dba_name = null, ?string $invoice_number_schema = null, ?int $billing_contact_id = null)
  */
 class UpdateCustomer
+{
+}
+namespace App\Actions\Dashboard;
+
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob()
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean)
+ * @method static dispatchSync()
+ * @method static dispatchNow()
+ * @method static dispatchAfterResponse()
+ * @method static \Illuminate\Support\Collection run()
+ */
+class RecentCarriersCard
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob()
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean)
+ * @method static dispatchSync()
+ * @method static dispatchNow()
+ * @method static dispatchAfterResponse()
+ * @method static \Illuminate\Support\Collection run()
+ */
+class RecentShipmentsCard
 {
 }
 namespace App\Actions\Defaults;
@@ -259,21 +305,93 @@ namespace App\Actions\Defaults;
  * @method static dispatchAfterResponse(int $organizationId)
  * @method static mixed run(int $organizationId)
  */
-class CreateOrganizationDefaults
+class CreateOrUpdateOrganizationDefaults
+{
+}
+namespace App\Actions\DocumentTemplates;
+
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Enums\Documents\DocumentTemplateType $templateType)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Enums\Documents\DocumentTemplateType $templateType)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Enums\Documents\DocumentTemplateType $templateType)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Enums\Documents\DocumentTemplateType $templateType)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Enums\Documents\DocumentTemplateType $templateType)
+ * @method static dispatchSync(\App\Enums\Documents\DocumentTemplateType $templateType)
+ * @method static dispatchNow(\App\Enums\Documents\DocumentTemplateType $templateType)
+ * @method static dispatchAfterResponse(\App\Enums\Documents\DocumentTemplateType $templateType)
+ * @method static string run(\App\Enums\Documents\DocumentTemplateType $templateType)
+ */
+class GetDefaultTemplate
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ * @method static dispatchSync(\App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ * @method static dispatchNow(\App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ * @method static dispatchAfterResponse(\App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ * @method static mixed run(\App\Models\Organizations\Organization $organization, \App\Models\Documents\DocumentTemplate $documentTemplate)
+ */
+class GetDocumentTemplate
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Organizations\Organization $organization)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Organizations\Organization $organization)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Organizations\Organization $organization)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Organizations\Organization $organization)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Organizations\Organization $organization)
+ * @method static dispatchSync(\App\Models\Organizations\Organization $organization)
+ * @method static dispatchNow(\App\Models\Organizations\Organization $organization)
+ * @method static dispatchAfterResponse(\App\Models\Organizations\Organization $organization)
+ * @method static mixed run(\App\Models\Organizations\Organization $organization)
+ */
+class GetDocumentTemplates
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Organizations\Organization $organization, array $data)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Organizations\Organization $organization, array $data)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Organizations\Organization $organization, array $data)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Organizations\Organization $organization, array $data)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Organizations\Organization $organization, array $data)
+ * @method static dispatchSync(\App\Models\Organizations\Organization $organization, array $data)
+ * @method static dispatchNow(\App\Models\Organizations\Organization $organization, array $data)
+ * @method static dispatchAfterResponse(\App\Models\Organizations\Organization $organization, array $data)
+ * @method static mixed run(\App\Models\Organizations\Organization $organization, array $data)
+ */
+class SaveDocumentTemplate
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $template)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $template)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $template)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $template)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $template)
+ * @method static dispatchSync(string $template)
+ * @method static dispatchNow(string $template)
+ * @method static dispatchAfterResponse(string $template)
+ * @method static array run(string $template)
+ */
+class ValidateTemplate
 {
 }
 namespace App\Actions\Documents;
 
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
- * @method static dispatchSync(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
- * @method static dispatchNow(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
- * @method static dispatchAfterResponse(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
- * @method static mixed run(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static dispatchSync(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static dispatchNow(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static dispatchAfterResponse(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
+ * @method static mixed run(string $documentableType, int $documentableId, string $fileName, \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file, ?string $folderName = null)
  */
 class CreateDocument
 {
@@ -334,6 +452,36 @@ class GetDocumentsWithFolders
 class UpdateDocument
 {
 }
+namespace App\Actions\Documents\Generators;
+
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ * @method static mixed run(\App\Models\Shipments\Shipment $shipment, \App\Models\Customers\Customer $customer)
+ */
+class GenerateCustomerInvoice
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment)
+ * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment)
+ * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment)
+ * @method static mixed run(\App\Models\Shipments\Shipment $shipment)
+ */
+class GenerateRateConfirmation
+{
+}
 namespace App\Actions\Facilities;
 
 /**
@@ -364,18 +512,132 @@ class CreateFacility
 class UpdateFacility
 {
 }
+namespace App\Actions\IntegrationSettings;
+
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $key, ?string $provider = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $key, ?string $provider = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $key, ?string $provider = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $key, ?string $provider = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $key, ?string $provider = null)
+ * @method static dispatchSync(string $key, ?string $provider = null)
+ * @method static dispatchNow(string $key, ?string $provider = null)
+ * @method static dispatchAfterResponse(string $key, ?string $provider = null)
+ * @method static mixed run(string $key, ?string $provider = null)
+ */
+class ClearIntegrationCaches
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $key)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $key)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $key)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $key)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $key)
+ * @method static dispatchSync(string $key)
+ * @method static dispatchNow(string $key)
+ * @method static dispatchAfterResponse(string $key)
+ * @method static bool run(string $key)
+ */
+class DeleteIntegrationSetting
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob()
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean)
+ * @method static dispatchSync()
+ * @method static dispatchNow()
+ * @method static dispatchAfterResponse()
+ * @method static \Illuminate\Support\Collection run()
+ */
+class GetAllGlobalIntegrationSettings
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob()
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean)
+ * @method static dispatchSync()
+ * @method static dispatchNow()
+ * @method static dispatchAfterResponse()
+ * @method static \Illuminate\Support\Collection run()
+ */
+class GetFrontendIntegrationSettings
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $key)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $key)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $key)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $key)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $key)
+ * @method static dispatchSync(string $key)
+ * @method static dispatchNow(string $key)
+ * @method static dispatchAfterResponse(string $key)
+ * @method static mixed run(string $key)
+ */
+class GetIntegrationSetting
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $provider)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $provider)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $provider)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $provider)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $provider)
+ * @method static dispatchSync(string $provider)
+ * @method static dispatchNow(string $provider)
+ * @method static dispatchAfterResponse(string $provider)
+ * @method static \Illuminate\Support\Collection run(string $provider)
+ */
+class GetProviderSettings
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ * @method static dispatchSync(string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ * @method static dispatchNow(string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ * @method static dispatchAfterResponse(string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ * @method static \App\Models\Organizations\IntegrationSetting run(string $key, mixed $value, ?string $provider = null, bool $exposeToFrontend = false)
+ */
+class SetIntegrationSetting
+{
+}
 namespace App\Actions\Locations;
 
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
- * @method static dispatchSync(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
- * @method static dispatchNow(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
- * @method static dispatchAfterResponse(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
- * @method static \App\Models\Location run(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null)
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $abbreviation)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $abbreviation)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $abbreviation)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $abbreviation)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $abbreviation)
+ * @method static dispatchSync(string $abbreviation)
+ * @method static dispatchNow(string $abbreviation)
+ * @method static dispatchAfterResponse(string $abbreviation)
+ * @method static string run(string $abbreviation)
+ */
+class AbbreviationToState
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
+ * @method static dispatchSync(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
+ * @method static dispatchNow(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
+ * @method static dispatchAfterResponse(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
+ * @method static \App\Models\Location run(string $address_line_1, string $address_city, string $address_state, string $address_zipcode, ?string $name = null, ?string $address_line_2 = null, ?float $latitude = null, ?float $longitude = null)
  */
 class CreateLocation
 {
@@ -427,6 +689,20 @@ class GetNotes
 namespace App\Actions\Organizations;
 
 /**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Organizations\Organization $organization)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Organizations\Organization $organization)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Organizations\Organization $organization)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Organizations\Organization $organization)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Organizations\Organization $organization)
+ * @method static dispatchSync(\App\Models\Organizations\Organization $organization)
+ * @method static dispatchNow(\App\Models\Organizations\Organization $organization)
+ * @method static dispatchAfterResponse(\App\Models\Organizations\Organization $organization)
+ * @method static void run(\App\Models\Organizations\Organization $organization)
+ */
+class CheckSeatLimits
+{
+}
+/**
  * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $email, \App\Models\Organizations\Organization $organization)
  * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $email, \App\Models\Organizations\Organization $organization)
  * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $email, \App\Models\Organizations\Organization $organization)
@@ -438,6 +714,20 @@ namespace App\Actions\Organizations;
  * @method static \App\Models\Organizations\OrganizationInvite run(string $email, \App\Models\Organizations\Organization $organization)
  */
 class SendInvite
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ * @method static dispatchSync(\App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ * @method static dispatchNow(\App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ * @method static dispatchAfterResponse(\App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ * @method static \App\Models\Organizations\Organization run(\App\Models\Organizations\Organization $organization, string $name, ?string $company_name = null, ?int $company_location_id = null, ?string $company_phone = null, ?string $company_email = null, ?string $accounting_contact_email = null, ?string $accounting_contact_phone = null)
+ */
+class UpdateOrganization
 {
 }
 namespace App\Actions\Shipments;
@@ -457,15 +747,15 @@ class CancelShipment
 {
 }
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
- * @method static dispatchSync(array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
- * @method static dispatchNow(array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
- * @method static dispatchAfterResponse(array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
- * @method static \App\Models\Shipments\Shipment run(array $customerIds, int $carrierId, array $stops, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static dispatchSync(array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static dispatchNow(array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static dispatchAfterResponse(array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
+ * @method static \App\Models\Shipments\Shipment run(array $customerIds, array $stops, ?int $carrierId = null, ?float $weight = null, ?float $tripDistance = null, ?int $trailerTypeId = null, ?int $trailerSizeId = null, ?bool $trailerTemperatureRange = false, ?float $trailerTemperature = null, ?float $trailerTemperatureMaximum = null, ?string $shipmentNumber = null)
  */
 class CreateShipment
 {
@@ -495,49 +785,21 @@ class DispatchShipment
  * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment)
  * @method static \App\Models\Shipments\Shipment run(\App\Models\Shipments\Shipment $shipment)
  */
-class GetShipmentFinancials
+class GetShipmentAccounting
 {
 }
 /**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, array $accessorials)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, array $accessorials)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, array $accessorials)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $accessorials)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $accessorials)
- * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, array $accessorials)
- * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, array $accessorials)
- * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, array $accessorials)
- * @method static \Illuminate\Support\Collection run(\App\Models\Shipments\Shipment $shipment, array $accessorials)
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
+ * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
+ * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
+ * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
+ * @method static \App\Models\Shipments\Shipment run(\App\Models\Shipments\Shipment $shipment, ?\App\Services\Shipments\ShipmentStateService $stateService = null)
  */
-class SaveAccessorials
-{
-}
-/**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Illuminate\Support\Collection run(\App\Models\Shipments\Shipment $shipment, array $rates)
- */
-class SaveShipmentCarrierRates
-{
-}
-/**
- * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, \App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static dispatchSync(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static dispatchNow(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static dispatchAfterResponse(\App\Models\Shipments\Shipment $shipment, array $rates)
- * @method static \Illuminate\Support\Collection run(\App\Models\Shipments\Shipment $shipment, array $rates)
- */
-class SaveShipmentCustomerRates
+class UncancelShipment
 {
 }
 /**
@@ -613,6 +875,20 @@ class UpdateShipmentStops
 namespace App\Actions;
 
 /**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string $email, string $feedback)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string $email, string $feedback)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string $email, string $feedback)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, string $email, string $feedback)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, string $email, string $feedback)
+ * @method static dispatchSync(string $email, string $feedback)
+ * @method static dispatchNow(string $email, string $feedback)
+ * @method static dispatchAfterResponse(string $email, string $feedback)
+ * @method static \Illuminate\Http\Response run(string $email, string $feedback)
+ */
+class SubmitFeedback
+{
+}
+/**
  * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(string|array $zipcodes)
  * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(string|array $zipcodes)
  * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(string|array $zipcodes)
@@ -624,6 +900,50 @@ namespace App\Actions;
  * @method static array run(string|array $zipcodes)
  */
 class ZipToTimezone
+{
+}
+namespace App\Actions\Subscriptions;
+
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(int $quantity = 1)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(int $quantity = 1)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(int $quantity = 1)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, int $quantity = 1)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, int $quantity = 1)
+ * @method static dispatchSync(int $quantity = 1)
+ * @method static dispatchNow(int $quantity = 1)
+ * @method static dispatchAfterResponse(int $quantity = 1)
+ * @method static mixed run(int $quantity = 1)
+ */
+class NewUserSeatsSubscription
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob()
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch()
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean)
+ * @method static dispatchSync()
+ * @method static dispatchNow()
+ * @method static dispatchAfterResponse()
+ * @method static mixed run()
+ */
+class RedirectToBillingPortal
+{
+}
+/**
+ * @method static \Lorisleiva\Actions\Decorators\JobDecorator|\Lorisleiva\Actions\Decorators\UniqueJobDecorator makeJob(int $quantity)
+ * @method static \Lorisleiva\Actions\Decorators\UniqueJobDecorator makeUniqueJob(int $quantity)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch dispatch(int $quantity)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchIf(bool $boolean, int $quantity)
+ * @method static \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Support\Fluent dispatchUnless(bool $boolean, int $quantity)
+ * @method static dispatchSync(int $quantity)
+ * @method static dispatchNow(int $quantity)
+ * @method static dispatchAfterResponse(int $quantity)
+ * @method static mixed run(int $quantity)
+ */
+class UpdateUserSeatsSubscription
 {
 }
 namespace Lorisleiva\Actions\Concerns;

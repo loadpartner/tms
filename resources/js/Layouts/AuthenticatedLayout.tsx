@@ -14,6 +14,7 @@ import {
     SidebarTrigger,
 } from '@/Components/ui/sidebar';
 import { Toaster } from '@/Components/ui/toaster';
+import { useInertiaErrorHandler } from '@/hooks/useInertiaErrorHandler';
 import { Link } from '@inertiajs/react';
 import { Fragment, PropsWithChildren } from 'react';
 
@@ -26,6 +27,8 @@ export default function Authenticated({
     children,
     breadcrumbs = [],
 }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
+    useInertiaErrorHandler();
+
     const sideBarOpen =
         document.cookie
             .split('; ')

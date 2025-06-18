@@ -13,9 +13,23 @@ export default function DatetimeDisplay({
             formattedDatetime = formattedDatetime + 'Z';
         }
 
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            timeZoneName: 'short',
+        };
+
+        if (timezone && timezone.trim() !== '') {
+            options.timeZone = timezone;
+        }
+
         formattedDatetime = new Date(formattedDatetime).toLocaleString(
             'en-US',
-            { timeZone: timezone, timeZoneName: 'short' },
+            options,
         );
     }
 

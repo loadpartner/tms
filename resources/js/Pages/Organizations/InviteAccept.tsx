@@ -42,7 +42,9 @@ export default function InviteAccept({
                         <div className="grid gap-2">
                             <p>
                                 Invite expires at{' '}
-                                {new Date(invite.expire_at).toLocaleString()}{' '}
+                                {new Date(
+                                    invite.expire_at,
+                                ).toLocaleString()}{' '}
                             </p>
                         </div>
                         <Button

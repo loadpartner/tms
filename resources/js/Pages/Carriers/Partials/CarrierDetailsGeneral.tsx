@@ -330,7 +330,7 @@ export default function CarrierDetailsGeneral({
                             </div>
                         </div>
                     ) : (
-                        <Skeleton className="h-24 w-full" />
+                        <span>-</span>
                     )}
                 </CardContent>
             </Card>

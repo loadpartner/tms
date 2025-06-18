@@ -752,6 +752,7 @@ const SidebarMenuSubButton = React.forwardRef<
                 size === 'sm' && 'text-xs',
                 size === 'md' && 'text-sm',
                 'group-data-[collapsible=icon]:hidden',
+                'cursor-pointer',
                 className,
             )}
             {...props}

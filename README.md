@@ -2,7 +2,7 @@
 
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/loadpartner/tms/tree/main)
 
-Open source and extensible freight brokerage Transportation Management System
+The Open Source Transportation Management System for Freight Brokers
 
 #### 🌐 [tms.loadpartner.io](https://tms.loadpartner.io)
 
@@ -70,8 +70,21 @@ sail npm run dev
 ``` bash
 sail artisan dev:refresh
 ```
+This will create test users with the following credentials:
 
-### More Development Questions?
-Checkout [DEVELOPMENT.md](./DEVELOPMENT.md) for some frequently ask questions.
+| Email | Password |
+|-------|----------|
+| admin@test.com | password |
+| user@test.com | password |
 
-If you still have questions, please join our discord for help!
+
+#### Setting up Mailpit
+- Ensure Mailpit is not commented out in `docker-compose.yml`
+- Visit http://localhost:8025 (or whatever you have specified in `docker-compose.yml FORWARD_MAILPIT_DASHBOARD_PORT`)
+- Update the following .env settings:
+
+``` bash
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025 # or whatever you have specified in docker-compose.yml FORWARD_MAILPIT_PORT
+```

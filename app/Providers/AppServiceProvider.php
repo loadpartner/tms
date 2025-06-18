@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Organizations\Organization;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Cashier::useCustomerModel(Organization::class);
+
         Vite::prefetch(concurrency: 3);
 
         Gate::guessPolicyNamesUsing(function (string $modelClass) {

@@ -9,4 +9,5 @@ enum DocumentFolder: string
     case BOLS = 'bols';
     case CUSTOMER_INVOICE = 'customer invoices';
     case CARRIER_BILLS = 'carrier bills';
+    case CYA = 'cya';
 }

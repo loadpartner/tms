@@ -3,12 +3,14 @@
 namespace Tests\Feature\Carriers;
 
 use App\Actions\Carriers\CreateCarrier;
+use App\Enums\Subscriptions\SubscriptionType;
 use App\Models\Location;
 use App\Models\Organizations\Organization;
 use App\Models\User;
 use App\Models\Carriers\Carrier;
 use Illuminate\Support\Facades\Context;
 use Inertia\Testing\AssertableInertia;
+use Laravel\Cashier\Subscription;
 
 beforeEach(function () {
     $this->setUpOrganization();
@@ -24,6 +26,23 @@ beforeEach(function () {
     $this->secondUser->organizations()->attach($this->secondOrg);
     $this->secondUser->current_organization_id = $this->secondOrg->id;
     $this->secondUser->save();
+
+    // Create subscriptions for both organizations to satisfy middleware
+    Subscription::create([
+        'organization_id' => $this->organization->id,
+        'type' => SubscriptionType::USER_SEAT->value,
+        'stripe_id' => 'sub_test_first_' . $this->organization->id,
+        'stripe_status' => 'active',
+        'quantity' => 5,
+    ]);
+
+    Subscription::create([
+        'organization_id' => $this->secondOrg->id,
+        'type' => SubscriptionType::USER_SEAT->value,
+        'stripe_id' => 'sub_test_second_' . $this->secondOrg->id,
+        'stripe_status' => 'active',
+        'quantity' => 5,
+    ]);
 
     // Store organization IDs and initial active user
     $this->firstOrgId = $this->organization->id;

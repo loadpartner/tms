@@ -17,9 +17,15 @@ import {
 } from '@/Components/ui/select';
 import { Textarea } from '@/Components/ui/textarea';
 import { useToast } from '@/hooks/UseToast';
-import { ShipmentStop } from '@/types';
+import {
+    convertDateForTimezone,
+    fetchTimezones,
+    getTimezoneByZipcode,
+} from '@/lib/timezone';
+import { ShipmentStop, TimezoneData } from '@/types';
 import { StopType } from '@/types/enums';
-import { useForm } from '@inertiajs/react';
+import { PageProps as InertiaPageProps } from '@inertiajs/core';
+import { useForm, usePage } from '@inertiajs/react';
 import {
     ArrowDown,
     ArrowUp,
@@ -30,11 +36,34 @@ import {
     Warehouse,
     X,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type FormErrors = {
     [key: `stops.${number}.${string}`]: string;
 };
+
+interface PageProps extends InertiaPageProps {
+    translations: {
+        shipments: {
+            stops: {
+                stop_type: string;
+                facility: string;
+                appointment_type: string;
+                appointment_time: string;
+                eta: string;
+                arrived_at: string;
+                loaded_at: string;
+                unloaded_at: string;
+                left_at: string;
+                reference_numbers: string;
+                special_instructions: string;
+                add_stop: string;
+                none: string;
+                not_set: string;
+            };
+        };
+    };
+}
 
 export default function ShipmentStopsList({
     shipmentId,
@@ -43,34 +72,24 @@ export default function ShipmentStopsList({
     shipmentId: number;
     stops: ShipmentStop[];
 }) {
+    const { translations } = usePage<PageProps>().props;
+    const t = translations.shipments.stops;
     const [editMode, setEditMode] = useState(false);
     const { toast } = useToast();
-    const [timezones, setTimezones] = useState<
-        Record<string, { identifier: string; dst_tz: string; std_tz: string }>
-    >({});
+    const [timezones, setTimezones] = useState<Record<string, TimezoneData>>(
+        {},
+    );
 
     useEffect(() => {
         const zipcodes = stops
             .map((stop) => stop.facility?.location?.address_zipcode ?? '')
             .filter(Boolean);
 
-        // if any of the zipcodes are new, fetch the timezones
-        const newZipcodes = zipcodes.filter(
-            (zipcode) => !(zipcode in timezones),
-        );
-        if (newZipcodes.length > 0) {
-            fetch(route('timezones.zipcode', { zipcodes: newZipcodes }), {
-                method: 'GET',
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    setTimezones((prev) => ({
-                        ...prev,
-                        ...data,
-                    }));
-                });
-        }
-    }, [stops, setTimezones, timezones]);
+        // Use the fetchTimezones helper function
+        fetchTimezones(zipcodes, timezones).then((data) => {
+            setTimezones(data);
+        });
+    }, [stops, timezones]);
 
     const updateStops = () => {
         patch(
@@ -96,7 +115,7 @@ export default function ShipmentStopsList({
         );
     };
 
-    const getSavedStops = () => {
+    const getSavedStops = useCallback(() => {
         const mappedStops = stops.map((stop) => ({
             ...stop,
             eta: stop.eta ? new Date(stop.eta).toISOString().slice(0, 16) : '',
@@ -119,38 +138,40 @@ export default function ShipmentStopsList({
                 : '',
         }));
 
-        return mappedStops;
-    };
+        return mappedStops as ShipmentStop[];
+    }, [stops]);
 
-    const convertForTimezone = (stop: ShipmentStop, date: string) => {
-        if (date.substring(date.length - 1) !== 'Z') {
-            date = date + 'Z';
-        }
-        const dateObj = new Date(date);
-        const stopTimezone = getTimezone(stop);
-        if (stopTimezone) {
-            return dateObj.toLocaleString('en-US', { timeZone: stopTimezone });
-        }
-        return dateObj.toLocaleString('en-US');
-    };
-
+    // Replace with helper function
     const getTimezone = (stop: ShipmentStop): string | undefined => {
         if (!stop.facility?.location?.address_zipcode) {
             return;
         }
 
-        const stopTimezone =
-            timezones[stop.facility?.location?.address_zipcode]?.identifier;
-        if (stopTimezone) {
-            return stopTimezone;
-        }
+        return getTimezoneByZipcode(
+            stop.facility.location.address_zipcode,
+            timezones,
+        );
     };
 
-    const { patch, setData, data, errors } = useForm<{ stops: ShipmentStop[] }>(
-        {
+    // Replace with helper function
+    const convertForTimezone = (stop: ShipmentStop, date: string) => {
+        const timezone = getTimezone(stop);
+        return convertDateForTimezone(date, timezone);
+    };
+
+    const { patch, setData, data, errors } = useForm<{
+        stops: ShipmentStop[];
+    }>({
+        stops: getSavedStops(),
+    });
+
+    const setDataRef = useRef(setData);
+
+    useEffect(() => {
+        setDataRef.current({
             stops: getSavedStops(),
-        },
-    );
+        });
+    }, [stops, getSavedStops]);
 
     const formErrors = errors as FormErrors;
 
@@ -180,11 +201,11 @@ export default function ShipmentStopsList({
                                         left_at: '',
                                         special_instructions: '',
                                         reference_numbers: '',
-                                    });
+                                    } as ShipmentStop);
                                     setData('stops', updatedStops);
                                 }}
                             >
-                                Add Stop
+                                {t.add_stop}
                             </Button>
                         )}
                     </div>
@@ -280,7 +301,7 @@ export default function ShipmentStopsList({
                                         {editMode ? (
                                             <>
                                                 <label className="text-sm font-medium">
-                                                    Stop Type
+                                                    {t.stop_type}
                                                 </label>
                                                 <Select
                                                     value={stop.stop_type}
@@ -293,7 +314,7 @@ export default function ShipmentStopsList({
                                                                 index
                                                             ],
                                                             stop_type: value,
-                                                        };
+                                                        } as ShipmentStop;
                                                         setData(
                                                             'stops',
                                                             updatedStops,
@@ -335,7 +356,7 @@ export default function ShipmentStopsList({
                                             </>
                                         ) : (
                                             <Avatar>
-                                                <AvatarFallback className="bg-primary p-1 text-white">
+                                                <AvatarFallback className="bg-primary p-1 text-white dark:text-secondary">
                                                     {stop.stop_type ===
                                                     StopType.Delivery ? (
                                                         <ArrowDown className="inline h-4 w-4" />
@@ -355,7 +376,7 @@ export default function ShipmentStopsList({
                                     <div>
                                         <div className="flex items-center justify-between">
                                             <label className="text-sm font-medium">
-                                                Facility
+                                                {t.facility}
                                             </label>
                                             {editMode && (
                                                 <Button
@@ -415,7 +436,7 @@ export default function ShipmentStopsList({
                                                                 ),
                                                                 name: selected?.label,
                                                             },
-                                                        };
+                                                        } as ShipmentStop;
                                                         setData(
                                                             'stops',
                                                             updatedStops,
@@ -446,7 +467,7 @@ export default function ShipmentStopsList({
                                     </div>
                                     <div>
                                         <label className="text-sm font-medium text-muted-foreground">
-                                            Appointment Type
+                                            {t.appointment_type}
                                         </label>
                                         {editMode ? (
                                             <>
@@ -466,7 +487,7 @@ export default function ShipmentStopsList({
                                                             ],
                                                             appointment_type:
                                                                 value,
-                                                        };
+                                                        } as ShipmentStop;
                                                         setData(
                                                             'stops',
                                                             updatedStops,
@@ -508,13 +529,13 @@ export default function ShipmentStopsList({
                                         ) : (
                                             <p className="capitalize">
                                                 {stop.appointment_type ||
-                                                    'Not set'}
+                                                    t.not_set}
                                             </p>
                                         )}
                                     </div>
                                     <div>
                                         <label className="text-sm font-medium">
-                                            Appointment Time
+                                            {t.appointment_time}
                                         </label>
                                         {editMode ? (
                                             <>
@@ -544,7 +565,7 @@ export default function ShipmentStopsList({
                                                             appointment_at:
                                                                 e?.toISOString() ||
                                                                 '',
-                                                        };
+                                                        } as ShipmentStop;
                                                         setData(
                                                             'stops',
                                                             updatedStops,
@@ -576,7 +597,7 @@ export default function ShipmentStopsList({
                                         <>
                                             <div>
                                                 <label className="text-sm font-medium">
-                                                    ETA
+                                                    {t.eta}
                                                 </label>
                                                 {editMode ? (
                                                     <>
@@ -613,7 +634,7 @@ export default function ShipmentStopsList({
                                                                     eta:
                                                                         e?.toISOString() ||
                                                                         '',
-                                                                };
+                                                                } as ShipmentStop;
                                                                 setData(
                                                                     'stops',
                                                                     updatedStops,
@@ -644,7 +665,7 @@ export default function ShipmentStopsList({
                                             </div>
                                             <div>
                                                 <label className="text-sm font-medium">
-                                                    Arrived At
+                                                    {t.arrived_at}
                                                 </label>
                                                 {editMode ? (
                                                     <>
@@ -681,7 +702,7 @@ export default function ShipmentStopsList({
                                                                     arrived_at:
                                                                         e?.toISOString() ||
                                                                         '',
-                                                                };
+                                                                } as ShipmentStop;
                                                                 setData(
                                                                     'stops',
                                                                     updatedStops,
@@ -715,8 +736,8 @@ export default function ShipmentStopsList({
                                             <div>
                                                 <label className="text-sm font-medium">
                                                     {stop.stop_type === 'pickup'
-                                                        ? 'Loaded At'
-                                                        : 'Unloaded At'}
+                                                        ? t.loaded_at
+                                                        : t.unloaded_at}
                                                 </label>
                                                 {editMode ? (
                                                     <>
@@ -753,7 +774,7 @@ export default function ShipmentStopsList({
                                                                     loaded_unloaded_at:
                                                                         e?.toISOString() ||
                                                                         '',
-                                                                };
+                                                                } as ShipmentStop;
                                                                 setData(
                                                                     'stops',
                                                                     updatedStops,
@@ -786,7 +807,7 @@ export default function ShipmentStopsList({
                                             </div>
                                             <div>
                                                 <label className="text-sm font-medium">
-                                                    Left At
+                                                    {t.left_at}
                                                 </label>
                                                 {editMode ? (
                                                     <>
@@ -823,7 +844,7 @@ export default function ShipmentStopsList({
                                                                     left_at:
                                                                         e?.toISOString() ||
                                                                         '',
-                                                                };
+                                                                } as ShipmentStop;
                                                                 setData(
                                                                     'stops',
                                                                     updatedStops,
@@ -856,7 +877,7 @@ export default function ShipmentStopsList({
                                     )}
                                     <div className="col-span-2">
                                         <label className="text-sm font-medium">
-                                            Reference Numbers
+                                            {t.reference_numbers}
                                         </label>
                                         {editMode ? (
                                             <>
@@ -875,7 +896,7 @@ export default function ShipmentStopsList({
                                                             ],
                                                             reference_numbers:
                                                                 e.target.value,
-                                                        };
+                                                        } as ShipmentStop;
                                                         setData(
                                                             'stops',
                                                             updatedStops,
@@ -898,13 +919,13 @@ export default function ShipmentStopsList({
                                         ) : (
                                             <p>
                                                 {stop.reference_numbers ||
-                                                    'None'}
+                                                    t.none}
                                             </p>
                                         )}
                                     </div>
                                     <div className="col-span-2">
                                         <label className="text-sm font-medium">
-                                            Special Instructions
+                                            {t.special_instructions}
                                         </label>
                                         {editMode ? (
                                             <>
@@ -923,7 +944,7 @@ export default function ShipmentStopsList({
                                                             ],
                                                             special_instructions:
                                                                 e.target.value,
-                                                        };
+                                                        } as ShipmentStop;
                                                         setData(
                                                             'stops',
                                                             updatedStops,
@@ -946,7 +967,7 @@ export default function ShipmentStopsList({
                                         ) : (
                                             <p>
                                                 {stop.special_instructions ||
-                                                    'None'}
+                                                    t.none}
                                             </p>
                                         )}
                                     </div>

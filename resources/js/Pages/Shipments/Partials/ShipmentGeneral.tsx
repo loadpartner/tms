@@ -118,7 +118,13 @@ export default function ShipmentGeneral({
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2">
-                    <div>
+                    <div
+                        className={cn(
+                            data.trailer_temperature != null || editMode
+                                ? 'block'
+                                : 'hidden',
+                        )}
+                    >
                         <label className="text-sm font-medium">
                             Temperature (°F)
                         </label>
@@ -130,7 +136,9 @@ export default function ShipmentGeneral({
                                     onChange={(e) =>
                                         setData(
                                             'trailer_temperature',
-                                            Number(e.target.value),
+                                            e.target.value == ''
+                                                ? undefined
+                                                : Number(e.target.value),
                                         )
                                     }
                                 />
@@ -147,9 +155,7 @@ export default function ShipmentGeneral({
                     </div>
                     <div
                         className={cn(
-                            data.trailer_temperature_range
-                                ? 'visible'
-                                : 'invisible',
+                            data.trailer_temperature_range ? 'block' : 'hidden',
                         )}
                     >
                         <label className="text-sm font-medium">
@@ -182,7 +188,13 @@ export default function ShipmentGeneral({
                             <p>{data.trailer_temperature_maximum}°F</p>
                         )}
                     </div>
-                    <div>
+                    <div
+                        className={cn(
+                            data.trailer_temperature != null || editMode
+                                ? 'block'
+                                : 'hidden',
+                        )}
+                    >
                         <label className="text-sm font-medium">
                             Temperature Range
                         </label>

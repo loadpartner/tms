@@ -33,6 +33,7 @@ class User extends Authenticatable
         'current_organization_id',
         'profile_photo_path',
         'timezone',
+        'language_preference',
     ];
 
     /**
@@ -66,7 +67,9 @@ class User extends Authenticatable
     public function getProfilePhotoUrlAttribute()
     {
         if ($this->profile_photo_path) {
-            return Storage::url($this->profile_photo_path);
+            // Extract filename from path
+            $filename = basename($this->profile_photo_path);
+            return route('profile.photo', ['userId' => $this->id, 'filename' => $filename]);
         }
 
         return null;
@@ -104,6 +107,8 @@ class User extends Authenticatable
      */
     public function organizations() : BelongsToMany
     {
+        /** Ignoring due to issue with pivot table returns not being supported by Larastan */
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(Organization::class, 'organization_users')
             ->using(OrganizationUser::class)
             ->withTimestamps();

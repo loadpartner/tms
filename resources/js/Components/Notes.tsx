@@ -1,3 +1,4 @@
+import { useEventBus } from '@/hooks/useEventBus';
 import { useToast } from '@/hooks/UseToast';
 import { cn } from '@/lib/utils';
 import { Note } from '@/types';
@@ -5,7 +6,13 @@ import { Notable } from '@/types/enums';
 import { useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { Trash } from 'lucide-react';
-import { FormEventHandler, useCallback, useEffect, useState } from 'react';
+import {
+    FormEventHandler,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import InputError from './InputError';
 import { Button } from './ui/button';
 import { ConfirmButton } from './ui/confirm-button';
@@ -18,7 +25,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from './ui/dialog';
-import { Skeleton } from './ui/skeleton';
+import { Loading } from './ui/loading';
 import { Textarea } from './ui/textarea';
 
 export default function Notes({
@@ -54,6 +61,29 @@ export default function Notes({
                 setLoading(false);
             });
     }, [notableType, notableId, toast]);
+
+    const { subscribe } = useEventBus();
+    const subscribeRef = useRef(subscribe);
+    const unsubscribeRef = useRef<(() => void) | null>(null);
+
+    useEffect(() => {
+        refreshNotes();
+
+        // Subscribe to the new event
+        unsubscribeRef.current = subscribeRef.current(
+            'note-changed-' + notableType + '-' + notableId,
+            () => {
+                refreshNotes();
+            },
+        );
+
+        // Cleanup on unmount
+        return () => {
+            if (unsubscribeRef.current) {
+                unsubscribeRef.current();
+            }
+        };
+    }, [notableType, notableId, refreshNotes]);
 
     useEffect(() => {
         refreshNotes();
@@ -157,9 +187,10 @@ export default function Notes({
             </div>
             {loading ? (
                 <div className="flex flex-col gap-2">
-                    <Skeleton className="h-10 w-full" />
-                    <Skeleton className="h-10 w-full" />
-                    <Skeleton className="h-10 w-full" />
+                    <Loading
+                        className="mx-auto h-[200px] w-full"
+                        text="Loading notes..."
+                    />
                 </div>
             ) : notes.length === 0 ? (
                 <div className="text-center text-sm text-gray-500">
@@ -187,10 +218,11 @@ export default function Notes({
                         {note.user_id === user?.id && (
                             <div className="flex justify-end">
                                 <ConfirmButton
-                                    variant="destructive"
+                                    variant="ghost"
                                     size="icon"
                                     onConfirm={() => handleDeleteNote(note.id)}
                                     confirmText="Delete"
+                                    className="text-destructive"
                                 >
                                     <Trash className="h-4 w-4" />
                                 </ConfirmButton>

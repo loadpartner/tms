@@ -27,8 +27,6 @@ class UpdateShipmentStops
             $shipment->stops()->updateOrCreate(['id' => $stop['id']], $stop);
         }
 
-        event(new ShipmentStopsUpdated($shipment));
-
         return $shipment;
     }
 

@@ -12,7 +12,7 @@ import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { DialogContent } from '@/Components/ui/dialog';
 import { Label } from '@/Components/ui/label';
-import { Skeleton } from '@/Components/ui/skeleton';
+import { Loading } from '@/Components/ui/loading';
 import { CarrierSaferReport } from '@/types';
 import { router } from '@inertiajs/react';
 import axios from 'axios';
@@ -168,10 +168,12 @@ function CarrierFmcsaCreateForm({
             {showCarrierSelectList && (
                 <div className="space-y-2">
                     <div className="max-h-[500px] space-y-2 overflow-y-auto">
-                        {isLoading &&
-                            [1, 2, 3].map((i) => (
-                                <Skeleton key={i} className="h-40 w-full" />
-                            ))}
+                        {isLoading && (
+                            <Loading
+                                className="mx-auto h-[200px] w-full"
+                                text="Loading..."
+                            />
+                        )}
                         {!isLoading && possibleCarriers.length < 1 && (
                             <p className="text-center text-muted-foreground">
                                 No carriers found
@@ -182,7 +184,10 @@ function CarrierFmcsaCreateForm({
                                 <Card key={carrier.id} className="py-0">
                                     <CardHeader className="md:p-4">
                                         <CardTitle>
-                                            {carrier.report.name}
+                                            {
+                                                carrier.report.general?.carrier
+                                                    ?.legalName
+                                            }
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent className="flex justify-between px-4">
@@ -190,21 +195,25 @@ function CarrierFmcsaCreateForm({
                                             <div className="text-sm">
                                                 <p>
                                                     {
-                                                        carrier.report.address
-                                                            .street
+                                                        carrier.report?.general
+                                                            ?.carrier?.phyStreet
                                                     }
                                                 </p>
                                                 <p>
                                                     {
-                                                        carrier.report.address
-                                                            .city
+                                                        carrier.report?.general
+                                                            ?.carrier?.phyCity
                                                     }
                                                     ,
                                                     {
-                                                        carrier.report.address
-                                                            .state
+                                                        carrier.report?.general
+                                                            ?.carrier?.phyState
                                                     }{' '}
-                                                    {carrier.report.address.zip}
+                                                    {
+                                                        carrier.report?.general
+                                                            ?.carrier
+                                                            ?.phyZipcode
+                                                    }
                                                 </p>
                                             </div>
                                             <p className="text-sm">

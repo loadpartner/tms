@@ -4,6 +4,7 @@ namespace App\Actions\Shipments;
 
 use App\Enums\StopType;
 use App\Enums\TemperatureUnit;
+use App\Events\Shipments\ShipmentCarrierUpdated;
 use App\Http\Resources\ShipmentResource;
 use App\Models\Shipments\Shipment;
 use Carbon\Carbon;
@@ -19,8 +20,8 @@ class CreateShipment
 
     public function handle(
         array $customerIds,
-        int $carrierId,
         array $stops,
+        ?int $carrierId = null,
         ?float $weight = null,
         ?float $tripDistance = null,
         ?int $trailerTypeId = null,
@@ -60,23 +61,25 @@ class CreateShipment
 
         DB::commit();
 
+        event(new ShipmentCarrierUpdated($shipment));
+
         return $shipment;
     }
 
     public function asController(ActionRequest $request) : Shipment 
     {
         return $this->handle(
-            customerIds: $request->customer_ids,
-            carrierId: $request->carrier_id,
-            stops: $request->stops,
-            weight: $request->weight,
-            tripDistance: $request->trip_distance,
-            trailerTypeId: $request->trailer_type_id,
-            trailerSizeId: $request->trailer_size_id,
-            trailerTemperatureRange: $request->trailer_temperature_range,
-            trailerTemperature: $request->trailer_temperature,
-            trailerTemperatureMaximum: $request->trailer_temperature_maximum,
-            shipmentNumber: $request->shipment_number,
+            customerIds: $request->validated('customer_ids'),
+            carrierId: $request->validated('carrier_id'),
+            stops: $request->validated('stops'),
+            weight: $request->validated('weight'),
+            tripDistance: $request->validated('trip_distance'),
+            trailerTypeId: $request->validated('trailer_type_id'),
+            trailerSizeId: $request->validated('trailer_size_id'),
+            trailerTemperatureRange: $request->validated('trailer_temperature_range'),
+            trailerTemperature: $request->validated('trailer_temperature'),
+            trailerTemperatureMaximum: $request->validated('trailer_temperature_maximum'),
+            shipmentNumber: $request->validated('shipment_number'),
         );
     }
 
@@ -106,7 +109,7 @@ class CreateShipment
             'trailer_temperature' => ['nullable', 'numeric'],
             'trailer_temperature_maximum' => ['nullable', 'numeric'],
 
-            'carrier_id' => ['required', 'exists:carriers,id'],
+            'carrier_id' => ['exists:carriers,id'],
             'stops' => ['required', 'array'],
             'stops.*.stop_type' => ['required', Rule::enum(StopType::class)],
             'stops.*.facility_id' => ['required', 'exists:facilities,id'],

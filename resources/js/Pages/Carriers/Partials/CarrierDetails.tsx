@@ -2,6 +2,7 @@ import ContactList from '@/Components/Contacts/ContactList/ContactList';
 import DocumentsList from '@/Components/Documents/DocumentsList';
 import ShipmentList from '@/Components/Shipments/ShipmentList/ShipmentList';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import { ComingSoon } from '@/Components/ui/coming-soon';
 import { Input } from '@/Components/ui/input';
 import {
     Select,
@@ -10,7 +11,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/ui/select';
-import { Skeleton } from '@/Components/ui/skeleton';
 import { Switch } from '@/Components/ui/switch';
 import {
     Table,
@@ -95,13 +95,13 @@ export default function CarrierDetails({ carrier }: { carrier: Carrier }) {
                             />
                             <button
                                 onClick={handleSave}
-                                className="p-1 text-confirm-600 hover:text-confirm-700"
+                                className="p-1 text-success hover:text-success/75"
                             >
                                 <Check className="h-5 w-5" />
                             </button>
                             <button
                                 onClick={handleCancel}
-                                className="p-1 text-cancel-600 hover:text-cancel-700"
+                                className="p-1 text-destructive hover:text-destructive/75"
                             >
                                 <X className="h-5 w-5" />
                             </button>
@@ -251,7 +251,10 @@ export default function CarrierDetails({ carrier }: { carrier: Carrier }) {
                                     </div>
                                 </div>
                             ) : (
-                                <Skeleton className="h-48 w-full" />
+                                <ComingSoon
+                                    variant="outline"
+                                    className="mx-auto"
+                                />
                             )}
                         </CardContent>
                     </Card>
@@ -332,12 +335,12 @@ export default function CarrierDetails({ carrier }: { carrier: Carrier }) {
                                                 ?.general?.carrier
                                                 ?.statusCode === 'A' ? (
                                                 <>
-                                                    <CheckCircle2 className="h-4 w-4 text-confirm-600" />
+                                                    <CheckCircle2 className="h-4 w-4 text-success" />
                                                     <span>Active</span>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <XCircle className="h-4 w-4 text-cancel-600" />
+                                                    <XCircle className="h-4 w-4 text-destructive" />
                                                     <span>Inactive</span>
                                                 </>
                                             )}
@@ -604,7 +607,7 @@ function BouncedShipmentsList({ carrier }: { carrier?: Carrier }) {
                         <TableHead>Bounce Date</TableHead>
                         <TableHead>Shipment</TableHead>
                         <TableHead>Driver</TableHead>
-                        <TableHead>Bounce Type</TableHead>
+                        <TableHead>Bounce Cause</TableHead>
                         <TableHead>Reason</TableHead>
                         <TableHead>Bounced By</TableHead>
                     </TableRow>
@@ -634,7 +637,7 @@ function BouncedShipmentsList({ carrier }: { carrier?: Carrier }) {
                                 </Link>
                             </TableCell>
                             <TableCell>{bounce.driver?.name}</TableCell>
-                            <TableCell>{bounce.bounce_type}</TableCell>
+                            <TableCell>{bounce.bounce_cause}</TableCell>
                             <TableCell>{bounce.reason}</TableCell>
                             <TableCell>
                                 {bounce.bounced_by_user?.name}

@@ -1,6 +1,7 @@
 import DocumentsList from '@/Components/Documents/DocumentsList';
+import LocationMap from '@/Components/Shipments/LocationMap';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
-import { Skeleton } from '@/Components/ui/skeleton';
+import { ComingSoon } from '@/Components/ui/coming-soon';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Shipment, ShipmentStop, TrailerSize, TrailerType } from '@/types';
 import { Documentable } from '@/types/enums';
@@ -8,7 +9,8 @@ import { Head } from '@inertiajs/react';
 import { Folder, MapPin } from 'lucide-react';
 import CarrierDetails from './Partials/CarrierDetails';
 import CustomerDetails from './Partials/CustomerDetails';
-import ShipmentFinancialDetails from './Partials/ShipmentFinancialDetails';
+import ShipmentAccountingDetails from './Partials/ShipmentAccountingDetails';
+import ShipmentCheckCalls from './Partials/ShipmentCheckCalls';
 import ShipmentGeneral from './Partials/ShipmentGeneral';
 import ShipmentHeader from './Partials/ShipmentHeader';
 import ShipmentNotes from './Partials/ShipmentNotes';
@@ -55,7 +57,7 @@ export default function Show({
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <Skeleton className="h-[300px] w-full" />
+                                <LocationMap shipment={shipment} />
                             </CardContent>
                         </Card>
 
@@ -65,9 +67,8 @@ export default function Show({
                             stops={stops}
                         />
 
-                        {/* Financials */}
-
-                        <ShipmentFinancialDetails shipment={shipment} />
+                        {/* Accounting */}
+                        <ShipmentAccountingDetails shipment={shipment} />
 
                         {/* Notes */}
                         <ShipmentNotes shipmentId={shipment.id} />
@@ -88,6 +89,26 @@ export default function Show({
                         {/* Customers */}
                         <CustomerDetails shipment={shipment} />
 
+                        {/* Check Calls */}
+                        <ShipmentCheckCalls
+                            shipment={shipment}
+                            stops={stops}
+                            carrierContacts={shipment.carrier?.contacts || []}
+                        />
+
+                        {/* Activity Feed */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Recent Activity</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-2">
+                                <ComingSoon
+                                    variant="outline"
+                                    className="mx-auto"
+                                />
+                            </CardContent>
+                        </Card>
+
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center justify-between gap-2">
@@ -104,20 +125,6 @@ export default function Show({
                                     documentableType={Documentable.Shipment}
                                     documentableId={shipment.id}
                                 />
-                            </CardContent>
-                        </Card>
-
-                        {/* Activity Feed */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Recent Activity</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <div className="flex items-center justify-center rounded-md border border-dashed p-4">
-                                    <p className="text-sm text-muted-foreground">
-                                        Activity feed coming soon
-                                    </p>
-                                </div>
                             </CardContent>
                         </Card>
                     </div>

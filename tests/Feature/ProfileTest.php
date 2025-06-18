@@ -20,6 +20,7 @@ test('profile information can be updated', function () {
         ->post('/profile', [
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'language_preference' => 'en',
         ]);
 
     $response
@@ -41,6 +42,7 @@ test('email verification status is unchanged when the email address is unchanged
         ->post('/profile', [
             'name' => 'Test User',
             'email' => $user->email,
+            'language_preference' => 'en',
         ]);
 
     $response

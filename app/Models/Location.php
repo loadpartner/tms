@@ -19,6 +19,8 @@ class Location extends Model
         'address_city',
         'address_state',
         'address_zipcode',
+        'latitude',
+        'longitude',
     ];
 
     protected $appends = [ 'selectable_label' ];

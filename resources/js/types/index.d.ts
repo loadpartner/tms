@@ -7,6 +7,7 @@ export interface User {
     organizations: Organization[];
     profile_photo_url?: string;
     timezone?: string;
+    language_preference?: string;
 }
 
 export type PageProps<
@@ -21,6 +22,12 @@ export type PageProps<
     app: {
         name: string;
     };
+    integration_settings: {
+        [key: string]: string;
+    };
+    config: {
+        enable_billing: boolean;
+    };
 };
 
 export interface Location {
@@ -32,6 +39,9 @@ export interface Location {
     address_state: string;
     address_zipcode: string;
     selectable_label: string;
+    latitude?: number;
+    longitude?: number;
+    timezone?: TimezoneData;
 }
 
 export interface Contact {
@@ -79,6 +89,8 @@ export interface Carrier {
 
     documents?: Document[];
     document_folders?: DocumentFolder[];
+
+    contacts?: Contact[];
 }
 
 export interface CarrierSaferReport {
@@ -116,6 +128,10 @@ export interface CarrierSaferReport {
                 vehicleOosInsp?: number;
                 vehicleOosRate?: number;
                 vehicleOosRateNationalAverage?: string;
+                phyStreet?: string;
+                phyCity?: string;
+                phyState?: string;
+                phyZipcode?: string;
             };
         };
     };
@@ -126,6 +142,12 @@ export interface CarrierSaferReport {
 export interface Customer {
     id: number;
     name: string;
+
+    net_pay_days: number | null;
+    billing_location?: Location;
+    dba_name: string | null;
+    invoice_number_schema: string | null;
+    billing_contact?: Contact;
 
     documents?: Document[];
     document_folders?: DocumentFolder[];
@@ -147,13 +169,14 @@ export interface ShipmentStop {
     appointment_at: string;
     appointment_end_at: string;
     appointment_type: string;
+    [key: string]: string | number | boolean | undefined;
 }
 
 export interface Shipment {
     id: number;
     shipment_number: string;
     customers: Customer[];
-    carrier: Carrier;
+    carrier?: Carrier;
     driver?: Contact;
     stops: ShipmentStop[];
     weight: number;
@@ -161,16 +184,18 @@ export interface Shipment {
     trailer_type_id: number;
     trailer_size_id: number;
     trailer_temperature_range: boolean;
-    trailer_temperature: number;
+    trailer_temperature?: number;
     trailer_temperature_maximum?: number;
     lane?: string;
     next_stop?: ShipmentStop;
+    current_stop?: ShipmentStop;
     trailer_type?: TrailerType;
     trailer_size?: TrailerSize;
     state_label: string;
     state: ShipmentState;
     documents?: Document[];
     document_folders?: DocumentFolder[];
+    latest_rate_confirmation?: Document;
 }
 
 export interface Note {
@@ -197,7 +222,7 @@ export interface CarrierBounce {
     carrier_id: number;
     shipment_id: number;
     driver_id: number;
-    bounce_type: string;
+    bounce_cause: string;
     reason: string;
     created_at: string;
     bounced_by: number;
@@ -230,109 +255,100 @@ export interface DocumentFolder {
     name: string;
 }
 
-export interface ShipmentCustomerRate {
+export interface RateType {
+    id: number;
+    name: string;
+}
+
+export interface Payable {
     id: number;
     organization_id: number;
     shipment_id: number;
-    customer_id: number;
-    customer: {
+    payee_id: number;
+    payee_type: string;
+    payee?: {
         id: number;
         name: string;
     };
     rate: number;
     quantity: number;
     total: number;
-    customer_rate_type_id: number;
-    customer_rate_type: {
+    rate_type_id: number;
+    rate_type?: {
         id: number;
         name: string;
     };
-    currency_id: number;
-    currency: {
-        id: number;
-        code: string;
-        symbol: string;
-    };
+    currency_code: string;
 }
 
-export interface ShipmentCarrierRate {
+export interface Receivable {
     id: number;
     organization_id: number;
     shipment_id: number;
+    payer_id: number;
+    payer_type: string;
+    payer?: {
+        id: number;
+        name: string;
+    };
+    rate: number;
+    quantity: number;
+    total: number;
+    rate_type_id: number;
+    rate_type?: {
+        id: number;
+        name: string;
+    };
+    currency_code: string;
+}
+
+export interface ShipmentAccounting {
+    id: number;
+    receivables: Receivable[];
+    payables: Payable[];
+    rate_types: RateType[];
+    related_entities: AliasModel[];
+}
+
+export interface AliasModel {
+    id: number;
+    alias_name: string;
+    label: string;
+}
+
+export interface CheckCall {
+    id: number;
+    organization_id: number;
     carrier_id: number;
-    carrier: {
-        id: number;
-        name: string;
-    };
-    rate: number;
-    quantity: number;
-    total: number;
-    carrier_rate_type_id: number;
-    carrier_rate_type: {
-        id: number;
-        name: string;
-    };
-    currency_id: number;
-    currency: {
-        id: number;
-        code: string;
-        symbol: string;
-    };
-}
-
-export interface Accessorial {
-    id: number;
-    organization_id: number;
     shipment_id: number;
-    customer_id: number;
-    customer?: {
-        id: number;
-        name: string;
-    };
-    carrier_id: number;
-    carrier?: {
-        id: number;
-        name: string;
-    };
-    invoice_customer: boolean;
-    pay_carrier: boolean;
-    rate: number;
-    quantity: number;
-    total: number;
-    accessorial_type_id: number;
-    accessorial_type?: {
-        id: number;
-        name: string;
-    };
-    currency_id: number;
-    currency?: {
-        id: number;
-        code: string;
-        symbol: string;
-    };
+    user_id: number | null;
+    is_late: boolean;
+    arrived_at: string | null;
+    left_at: string | null;
+    eta: string | null;
+    is_truck_empty: boolean | null;
+    reported_trailer_temp: number | null;
+    loaded_unloaded_at: string | null;
+    contact_name: string | null;
+    contact_method: string | null;
+    contact_method_detail: string | null;
+    note_id: number | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    carrier?: Carrier;
+    shipment?: Shipment;
+    creator?: User;
+    note?: Note;
+    next_stop?: ShipmentStop;
+    current_stop?: ShipmentStop;
+    current_stop_id?: number;
+    next_stop_id?: number;
 }
 
-export interface ShipmentFinancials {
-    id: number;
-    shipment_customer_rates: ShipmentCustomerRate[];
-    shipment_carrier_rates: ShipmentCarrierRate[];
-    accessorials: Accessorial[];
-}
-
-export interface CustomerRateType {
-    id: number;
-    organization_id: number;
-    name: string;
-}
-
-export interface CarrierRateType {
-    id: number;
-    organization_id: number;
-    name: string;
-}
-
-export interface AccessorialType {
-    id: number;
-    organization_id: number;
-    name: string;
+// Typescript interface for timezone data
+export interface TimezoneData {
+    identifier: string;
+    dst_tz: string;
+    std_tz: string;
 }

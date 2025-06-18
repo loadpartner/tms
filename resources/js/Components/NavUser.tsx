@@ -133,7 +133,12 @@ export function NavUser({
                                 <BadgeCheck className="size-4" />
                                 Account
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
+                            <DropdownMenuItem
+                                onSelect={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }}
+                            >
                                 <ThemeToggle />
                             </DropdownMenuItem>
                         </DropdownMenuGroup>

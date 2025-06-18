@@ -53,7 +53,7 @@ class ShipmentController extends ResourceSearchController
     public function show(Shipment $shipment)
     {
         return Inertia::render('Shipments/Show', [
-            'shipment' => ShipmentResource::make($shipment->load('carrier', 'customers', 'driver', 'documents')),
+            'shipment' => ShipmentResource::make($shipment->load('carrier', 'customers', 'driver', 'documents', 'carrier.contacts')),
             'stops' => ShipmentStopResource::collection($shipment->stops->load('facility')),
             'trailerTypes' => TrailerTypeResource::collection(TrailerType::all()),
             'trailerSizes' => TrailerSizeResource::collection(TrailerSize::all()),

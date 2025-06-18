@@ -113,4 +113,15 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Feedback Email Address
+    |--------------------------------------------------------------------------
+    |
+    | This email address is used to receive feedback submissions from users.
+    |
+    */
+
+    'feedback_email' => env('FEEDBACK_EMAIL', 'feedback@example.com'),
+
 ];

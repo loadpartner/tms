@@ -2,7 +2,7 @@
 
 namespace App\Actions\Customers;
 
-use App\Http\Resources\CustomerResource;
+use App\Http\Resources\Customers\CustomerResource;
 use App\Models\Customers\Customer;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;

@@ -18,13 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('symbol');
         });
-
-        Currency::create([
-            'name' => 'United States dollar',
-            'code' => 'USD',
-            'symbol' => '$'
-        ]);
-
         Schema::create('customer_rate_types', function(Blueprint $table) {
             $table->id();
             $table->foreignId('organization_id')->constrained('organizations');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Resources\CustomerResource;
+use App\Http\Resources\Customers\CustomerResource;
 use App\Http\Resources\FacilityResource;
 use App\Models\Customers\Customer;
 use Illuminate\Http\Request;

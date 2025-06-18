@@ -2,12 +2,17 @@
 
 namespace App\Models\Shipments;
 
+use App\Http\Resources\AliasModelResource;
 use App\Http\Resources\ShipmentResource;
+use App\Models\Accounting\Payable;
+use App\Models\Accounting\Receivable;
 use App\Models\Carriers\Carrier;
 use App\Models\Carriers\CarrierBounce;
+use App\Models\CheckCalls\CheckCall;
 use App\Models\Contact;
 use App\Models\Customers\Customer;
 use App\States\Shipments\ShipmentState;
+use App\Traits\HasAliases;
 use App\Traits\HasDocuments;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasOrganization;
@@ -23,7 +28,7 @@ use Spatie\ModelStates\HasStatesContract;
 
 class Shipment extends Model implements HasStatesContract
 {
-    use HasOrganization, Searchable, HasFactory, HasNotes, HasStates, HasDocuments;
+    use HasOrganization, Searchable, HasFactory, HasNotes, HasStates, HasDocuments, HasAliases;
 
     protected $fillable = [
         'organization_id',
@@ -46,6 +51,13 @@ class Shipment extends Model implements HasStatesContract
     ];
 
     protected $appends = ['selectable_label'];
+
+    public $aliasName = 'shipment';
+    public $aliasProperties = [
+        'number' => 'shipment_number',
+        'lane' => 'function:lane',
+        'driver' => 'driver',
+    ];
 
     public function getSelectableLabelAttribute(): string
     {
@@ -107,6 +119,8 @@ class Shipment extends Model implements HasStatesContract
      */
     public function customers(): BelongsToMany
     {
+        /** Ignoring due to issue with pivot table returns not being supported by Larastan */
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(Customer::class, 'shipment_customers')->using(ShipmentCustomer::class);
     }
 
@@ -119,27 +133,50 @@ class Shipment extends Model implements HasStatesContract
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<ShipmentCustomerRate, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Payable, $this>
      */
-    public function shipment_customer_rates(): HasMany
+    public function payables(): HasMany
     {
-        return $this->hasMany(ShipmentCustomerRate::class);
+        return $this->hasMany(Payable::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<ShipmentCarrierRate, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Receivable, $this>
      */
-    public function shipment_carrier_rates(): HasMany
+    public function receivables(): HasMany
     {
-        return $this->hasMany(ShipmentCarrierRate::class);
+        return $this->hasMany(Receivable::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Accessorial, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<CheckCall, $this>
      */
-    public function accessorials(): HasMany
+    public function check_calls(): HasMany
     {
-        return $this->hasMany(Accessorial::class);
+        return $this->hasMany(CheckCall::class);
+    }
+
+    public function getRelatedEntitiesAttribute(): array
+    {
+        $entities = [];
+
+        foreach ($this->customers as $customer) {
+            $entities[] = $customer;
+        }
+
+        if($this->carrier) {
+            $entities[] = $this->carrier;
+        }
+        
+        foreach($this->stops as $stop) {
+            $entities[] = $stop->facility;
+        }
+
+        foreach($this->bounces as $bounce) {
+            $entities[] = $bounce->carrier;
+        }
+
+        return $entities;
     }
 
     public function getNextStopAttribute(): ?ShipmentStop

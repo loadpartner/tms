@@ -31,7 +31,7 @@ export const columns: ColumnDef<Shipment>[] = [
     },
     {
         accessorKey: 'state',
-        header: 'State',
+        header: 'Status',
         cell: ({ row }) => {
             return <Badge variant="outline">{row.original.state_label}</Badge>;
         },

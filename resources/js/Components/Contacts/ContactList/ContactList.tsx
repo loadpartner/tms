@@ -9,6 +9,7 @@ import {
 } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
+import { Loading } from '@/Components/ui/loading';
 import {
     Select,
     SelectContent,
@@ -16,7 +17,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/ui/select';
-import { Skeleton } from '@/Components/ui/skeleton';
 import { useToast } from '@/hooks/UseToast';
 import { Contact } from '@/types';
 import { Contactable } from '@/types/enums';
@@ -202,7 +202,10 @@ export default function ContactList({
             </div>
             {isLoading ? (
                 <>
-                    <Skeleton className="mx-auto h-[200px] w-1/2 rounded-md" />
+                    <Loading
+                        className="mx-auto h-[200px] w-full"
+                        text="Loading..."
+                    />
                 </>
             ) : (
                 <>

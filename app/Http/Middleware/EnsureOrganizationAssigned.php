@@ -15,22 +15,26 @@ class EnsureOrganizationAssigned
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user() && ! $request->user()->current_organization_id) {
-            // assign them to the first organization in their list
-            $firstOrg = $request->user()->organizations->first();
+        if ($request->user()) {
+            $invite = $request->user()
+                ->organizationInvites()
+                ->withoutGlobalScopes()
+                ->where('accepted_at', null)
+                ->first();
+            if ($invite) {
+                return redirect()->route(
+                    'organizations.invites.show',
+                    [
+                        'organization' => $invite->organization_id,
+                        'invite' => $invite->code
+                    ]
+                );
+            }
 
-            if ($firstOrg) {
-                $request->user()->update(['current_organization_id' => $firstOrg->id]);
-            } else {
-                // if they don't have an org, check for any pending invites
-                $invite = $request->user()->organizationInvites()->first();
-                if ($invite) {
-                    return redirect()->route('organizations.invites.show',
-                        [
-                            'organization' => $invite->organization_id,
-                            'invite' => $invite->code
-                        ]
-                    );
+            if (! $request->user()->current_organization_id) {
+                $firstOrg = $request->user()->organizations->first();
+                if ($firstOrg) {
+                    $request->user()->update(['current_organization_id' => $firstOrg->id]);
                 } else {
                     return redirect()->route('organizations.create');
                 }

@@ -5,9 +5,12 @@ namespace App\Actions\Documents;
 use App\Enums\Documents\Documentable;
 use App\Http\Resources\Documents\DocumentResource;
 use App\Models\Documents\Document;
+use Exception;
+use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -19,25 +22,31 @@ class CreateDocument
         string $documentableType,
         int $documentableId,
         string $fileName,
-        UploadedFile $file,
+        File|UploadedFile $file,
         ?string $folderName = null,
     )
     {
 
         $documentable = Documentable::from($documentableType)->getClassName()::findOrFail($documentableId);
 
+        // Generate a unique filename for filesystem storage to prevent collisions
+        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $uniqueFileName = Str::uuid() . '.' . $extension;
+
+        // Store the file with the unique filename
         $path = Storage::putFileAs(
             sprintf('documents/%s/%s', $documentableType, $documentable->id),
             $file,
-            $fileName,
+            $uniqueFileName,
         );
 
+        // Save the document with the original filename for display purposes
         $document = Document::create([
-            'name' => $fileName,
+            'name' => $fileName, // Original filename for display
             'folder_name' => $folderName,
             'documentable_id' => $documentable->id,
             'documentable_type' => $documentable->getMorphClass(),
-            'path' => $path,
+            'path' => $path, // Path includes the unique filename
             'uploaded_by' => Auth::user()?->id,
         ]);
 

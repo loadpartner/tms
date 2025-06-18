@@ -3,6 +3,7 @@
 use App\Models\Organizations\Organization;
 use Illuminate\Support\Facades\Context;
 
+
 // Gets the current organization id based on first the context, then the current user
 function current_organization_id(): ?int
 {

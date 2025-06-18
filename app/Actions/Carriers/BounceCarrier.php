@@ -2,7 +2,7 @@
 
 namespace App\Actions\Carriers;
 
-use App\Enums\Carriers\BounceType;
+use App\Enums\Carriers\BounceCause;
 use App\Events\Shipments\ShipmentCarrierBounced;
 use App\Http\Resources\Carriers\CarrierBounceResource;
 use App\Models\Carriers\CarrierBounce;
@@ -16,7 +16,7 @@ class BounceCarrier
 
     public function handle(
         Shipment $shipment,
-        BounceType|string $bounceType,
+        BounceCause|string $bounceCause,
         ?string $reason = null,
     ): CarrierBounce
     {
@@ -24,7 +24,7 @@ class BounceCarrier
             'shipment_id' => $shipment->id,
             'carrier_id' => $shipment->carrier_id,
             'driver_id' => $shipment->driver_id,
-            'bounce_type' => $bounceType,
+            'bounce_cause' => $bounceCause,
             'reason' => $reason,
             'bounced_by' => auth()->user()->id,
         ]);
@@ -44,7 +44,7 @@ class BounceCarrier
     {
         return $this->handle(
             shipment: $shipment,
-            bounceType: $request->validated('bounce_type'),
+            bounceCause: $request->validated('bounce_cause'),
             reason: $request->validated('reason'),
         );
     }
@@ -62,8 +62,8 @@ class BounceCarrier
     public function rules(): array
     {
         return [
-            'bounce_type' => ['required', 'string'],
-            'reason' => ['required', 'string'],
+            'bounce_cause' => ['required', 'string'],
+            'reason' => ['nullable', 'string'],
         ];
     }
 

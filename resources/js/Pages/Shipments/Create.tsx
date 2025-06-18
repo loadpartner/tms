@@ -43,13 +43,13 @@ export default function Create({
     const formSchema = z.object({
         shipment_number: z.string().optional(),
         customer_ids: z.array(z.string()),
-        carrier_id: z.string(),
+        carrier_id: z.string().optional(),
 
-        weight: z.string().nullable(),
-        trip_distance: z.string().nullable(),
+        weight: z.string().optional(),
+        trip_distance: z.string().optional(),
 
-        trailer_type_id: z.string().nullable(),
-        trailer_size_id: z.string().nullable(),
+        trailer_type_id: z.string().optional(),
+        trailer_size_id: z.string().optional(),
         trailer_temperature_range: z.boolean().nullable(),
         trailer_temperature: z.string().optional(),
         trailer_temperature_maximum: z.string().nullable().optional(),

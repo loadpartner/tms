@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Carriers\BounceType;
+use App\Enums\Carriers\BounceCause;
 use App\Http\Resources\Carriers\CarrierBounceResource;
 use App\Http\Resources\Carriers\CarrierResource;
 use App\Models\Carriers\Carrier;
@@ -79,7 +79,7 @@ class CarrierController extends ResourceSearchController
 
     public function bounceReasons()
     {
-        $cases = BounceType::cases();
+        $cases = BounceCause::cases();
         $cases = array_map(function ($case) {
             return $case->value;
         }, $cases);

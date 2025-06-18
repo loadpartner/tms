@@ -15,6 +15,9 @@ class SendInvite
 
     public function handle(string $email, Organization $organization) : OrganizationInvite
     {
+        // Check seat limits before creating invite
+        CheckSeatLimits::run($organization);
+
         // Human readable letters and numbers without overlap only, uppercase, 6 characters
         $code = strtoupper(substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXY23456789'), 0, 6));
 
@@ -48,7 +51,9 @@ class SendInvite
             'code' => $code,
         ]);
 
-        Mail::to($email)->send(new UserInvite($invite));
+        if (!app()->environment('local')) {
+            Mail::to($email)->send(new UserInvite($invite));
+        }
 
         return $invite;
     }

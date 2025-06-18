@@ -1,13 +1,9 @@
-import { ChevronsUpDown, Plus } from 'lucide-react';
+import { ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
 
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
 import {
@@ -16,6 +12,7 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/Components/ui/sidebar';
+import { ComingSoon } from './ui/coming-soon';
 
 export function TeamSwitcher({
     teams,
@@ -57,34 +54,13 @@ export function TeamSwitcher({
                         align="start"
                         side={isMobile ? 'bottom' : 'right'}
                         sideOffset={4}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setActiveTeam(teams[0]); //placeholder
+                        }}
                     >
-                        <DropdownMenuLabel className="text-xs text-muted-foreground">
-                            Teams
-                        </DropdownMenuLabel>
-                        {teams.map((team, index) => (
-                            <DropdownMenuItem
-                                key={team.name}
-                                onClick={() => setActiveTeam(team)}
-                                className="gap-2 p-2"
-                            >
-                                <div className="flex size-6 items-center justify-center rounded-sm border">
-                                    <team.logo className="size-4 shrink-0" />
-                                </div>
-                                {team.name}
-                                <DropdownMenuShortcut>
-                                    ⌘{index + 1}
-                                </DropdownMenuShortcut>
-                            </DropdownMenuItem>
-                        ))}
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="gap-2 p-2">
-                            <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                                <Plus className="size-4" />
-                            </div>
-                            <div className="font-medium text-muted-foreground">
-                                Add team
-                            </div>
-                        </DropdownMenuItem>
+                        <ComingSoon />
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>
