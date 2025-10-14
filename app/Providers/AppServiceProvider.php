@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Carriers\Carrier;
 use App\Models\Organizations\Organization;
+use App\Models\Shipments\Shipment;
+use App\Observers\CarrierObserver;
+use App\Observers\ShipmentObserver;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -28,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
     {
 
         Cashier::useCustomerModel(Organization::class);
+
+        Shipment::observe(ShipmentObserver::class);
+        Carrier::observe(CarrierObserver::class);
 
         Vite::prefetch(concurrency: 3);
 

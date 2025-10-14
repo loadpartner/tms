@@ -9,6 +9,9 @@ parameters:
 
     # Level 10 is the highest level
     level: 5
+    
+    # Use a writable cache directory
+    tmpDir: /var/www/html/storage/framework/cache/phpstan
 
     ignoreErrors:
         # Laravel Auditing package stubs are missing these relationships

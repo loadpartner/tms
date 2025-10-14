@@ -26,6 +26,7 @@ const FOREIGN_KEY_MAPPINGS: Record<string, string> = {
     updated_by: 'user',
     carrier_id: 'carrier',
     customer_id: 'customer',
+    facility_id: 'facility',
 };
 
 export default function AuditFieldValue({

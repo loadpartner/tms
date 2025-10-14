@@ -3,6 +3,7 @@
 namespace App\Actions\Shipments;
 
 use App\Models\Shipments\Shipment;
+use App\Models\Shipments\ShipmentStop;
 use App\Traits\HandlesAuditHistory;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -42,6 +43,8 @@ class GetShipmentAuditHistory
             return [
                 'organization_id' => 'Organization',
                 'carrier_id' => 'Carrier',
+                'customer_id' => 'Customer',
+                'customer_name' => 'Customer',
                 'driver_id' => 'Driver',
                 'weight' => 'Weight',
                 'trip_distance' => 'Trip Distance',
@@ -52,6 +55,23 @@ class GetShipmentAuditHistory
                 'trailer_temperature_maximum' => 'Maximum Temperature',
                 'shipment_number' => 'Shipment Number',
                 'state' => 'Status',
+            ];
+        }
+
+        if ($auditableType === ShipmentStop::class) {
+            return [
+                'facility_id' => 'Facility',
+                'stop_type' => 'Stop Type',
+                'special_instructions' => 'Special Instructions',
+                'reference_numbers' => 'Reference Numbers',
+                'stop_number' => 'Stop Number',
+                'eta' => 'ETA',
+                'arrived_at' => 'Arrived At',
+                'loaded_unloaded_at' => 'Loaded/Unloaded At',
+                'left_at' => 'Left At',
+                'appointment_at' => 'Appointment Start',
+                'appointment_end_at' => 'Appointment End',
+                'appointment_type' => 'Appointment Type',
             ];
         }
 

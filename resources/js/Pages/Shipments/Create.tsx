@@ -658,8 +658,10 @@ export default function Create({
                                                             'stops',
                                                             stops,
                                                             {
-                                                                shouldValidate: false,
-                                                                shouldTouch: false,
+                                                                shouldValidate:
+                                                                    false,
+                                                                shouldTouch:
+                                                                    false,
                                                             },
                                                         );
                                                     }}
@@ -697,8 +699,10 @@ export default function Create({
                                                             'stops',
                                                             stops,
                                                             {
-                                                                shouldValidate: false,
-                                                                shouldTouch: false,
+                                                                shouldValidate:
+                                                                    false,
+                                                                shouldTouch:
+                                                                    false,
                                                             },
                                                         );
                                                     }}

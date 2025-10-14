@@ -15,9 +15,12 @@ class CreateCarrier
         string $name,
     ): Carrier
     {
-        return Carrier::create([
+        $carrier = Carrier::create([
+            'organization_id' => current_organization_id(),
             'name' => $name,
         ]);
+
+        return $carrier;
     }
 
     public function asController(ActionRequest $request): Carrier

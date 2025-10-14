@@ -462,8 +462,8 @@ export default function AuditTable({ audits, loading }: AuditTableProps) {
                                                                         change.field
                                                                     }
                                                                 </div>
-                                                                <div className="flex items-center gap-2 text-xs">
-                                                                    <span className="max-w-[120px] truncate rounded border border-red-200 bg-red-50 px-2 py-1 text-red-800">
+                                                                <div className="flex items-center gap-2 text-sm">
+                                                                    <span className="text-red-600">
                                                                         <AuditFieldValue
                                                                             fieldName={
                                                                                 change.field_name
@@ -479,7 +479,7 @@ export default function AuditTable({ audits, loading }: AuditTableProps) {
                                                                     <span className="text-gray-400">
                                                                         →
                                                                     </span>
-                                                                    <span className="max-w-[120px] truncate rounded border border-green-200 bg-green-50 px-2 py-1 text-green-800">
+                                                                    <span className="text-green-600">
                                                                         <AuditFieldValue
                                                                             fieldName={
                                                                                 change.field_name

@@ -6,6 +6,7 @@ use App\Actions\Utilities\FormatPhoneForCountry;
 use App\Models\Carriers\Carrier;
 use App\Models\Contact;
 use App\Models\Customers\Customer;
+use App\Models\Facility;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -57,6 +58,7 @@ class GetAuditLinkedData
             'contact' => Contact::find($id),
             'carrier' => Carrier::find($id),
             'customer' => Customer::find($id),
+            'facility' => Facility::find($id),
             'user' => User::find($id),
             default => null,
         };
@@ -69,6 +71,7 @@ class GetAuditLinkedData
             'contact' => 'Contact',
             'carrier' => 'Carrier',
             'customer' => 'Customer',
+            'facility' => 'Facility',
             'user' => 'User',
             default => ucfirst($type),
         };
@@ -81,6 +84,7 @@ class GetAuditLinkedData
             'contact' => ($model instanceof Contact ? $model->name : null) ?? 'Contact #' . $model->getKey(),
             'carrier' => ($model instanceof Carrier ? $model->name : null) ?? 'Carrier #' . $model->getKey(),
             'customer' => ($model instanceof Customer ? $model->name : null) ?? 'Customer #' . $model->getKey(),
+            'facility' => ($model instanceof Facility ? $model->name : null) ?? 'Facility #' . $model->getKey(),
             'user' => ($model instanceof User ? $model->name : null) ?? 'User #' . $model->getKey(),
             default => ucfirst($type) . ' #' . $model->getKey(),
         };
@@ -109,6 +113,7 @@ class GetAuditLinkedData
             'contact' => $this->getContactData($model),
             'carrier' => $this->getCarrierData($model),
             'customer' => $this->getCustomerData($model),
+            'facility' => $this->getFacilityData($model),
             'user' => $this->getUserData($model),
             default => $model->toArray(),
         };
@@ -174,7 +179,7 @@ class GetAuditLinkedData
         if (!$customer instanceof Customer) {
             return [];
         }
-        
+
         return [
             'name' => $customer->name,
             'dba_name' => $customer->dba_name,
@@ -182,6 +187,31 @@ class GetAuditLinkedData
             'invoice_number_schema' => $customer->invoice_number_schema,
             'created_at' => $customer->created_at?->format('M j, Y g:i A'),
         ];
+    }
+
+    private function getFacilityData(Model $facility): array
+    {
+        if (!$facility instanceof Facility) {
+            return [];
+        }
+
+        $data = [
+            'name' => $facility->name,
+            'created_at' => $facility->created_at?->format('M j, Y g:i A'),
+        ];
+
+        // Add location information if available
+        if ($facility->location) {
+            $data['address'] = collect([
+                $facility->location->address_line_1,
+                $facility->location->address_line_2,
+            ])->filter()->implode(', ');
+            $data['city'] = $facility->location->address_city;
+            $data['state'] = $facility->location->address_state;
+            $data['zipcode'] = $facility->location->address_zipcode;
+        }
+
+        return $data;
     }
 
     private function getUserData(Model $user): array
@@ -203,6 +233,7 @@ class GetAuditLinkedData
             return match ($type) {
                 'carrier' => route('carriers.show', $model->getKey()),
                 'customer' => route('customers.show', $model->getKey()),
+                'facility' => route('facilities.show', $model->getKey()),
                 'location' => null, // Locations don't have individual view pages
                 'contact' => null, // Contacts don't have individual view pages
                 'user' => null, // Users don't have individual view pages typically

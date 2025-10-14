@@ -169,7 +169,7 @@ class GenerateRateConfirmation
         foreach ($shipmentStops as $stop) {
             $facility = $stop->facility;
             $location = $facility->location;
-            $appointmentAt = $stop->appointment_at ? \Carbon\Carbon::parse($stop->appointment_at) : null;
+            $appointmentAt = \Carbon\Carbon::parse($stop->appointment_at);
             
             $stopType = '';
             if ($stop->stop_type == StopType::Pickup) {
@@ -186,8 +186,8 @@ class GenerateRateConfirmation
                 'city' => $location->address_city ?? '',
                 'state' => $location->state_shorthand ?? '',
                 'zip' => $location->address_zipcode ?? '',
-                'date' => $appointmentAt?->format('m/d/Y') ?? '',
-                'time' => $appointmentAt?->format('h:i A') ?? '',
+                'date' => $appointmentAt->format('m/d/Y'),
+                'time' => $appointmentAt->format('h:i A'),
                 'contact' => $facility->contacts->first()->name ?? '',
                 'phone' => $facility->contacts->first()->phone ?? '',
                 'special_instructions' => $stop->special_instructions ?? '',

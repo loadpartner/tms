@@ -2,33 +2,47 @@
 
 namespace App\Events\Shipments;
 
+use App\Events\Core\TmsEvent;
 use App\Models\Shipments\Shipment;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Str;
 
-class ShipmentCarrierBounced
+class ShipmentCarrierBounced extends TmsEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    /**
-     * Create a new event instance.
-     */
     public function __construct(
-        public Shipment $shipment,
+        public readonly Shipment $shipment,
+        public readonly ?string $reason = null,
+        array $metadata = []
     ) {
-        
+        parent::__construct(
+            eventId: Str::uuid()->toString(),
+            organizationId: $shipment->organization_id,
+            occurredAt: now(),
+            triggeredBy: auth()->user(),
+            metadata: array_merge($metadata, ['reason' => $reason])
+        );
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
+    public function getEventType(): string
+    {
+        return 'shipment.carrier_bounced';
+    }
+
+    public function getEventData(): array
     {
         return [
-            
+            'entity_type' => Shipment::class,
+            'entity_id' => $this->shipment->id,
+            'shipment_id' => $this->shipment->id,
+            'shipment_number' => $this->shipment->shipment_number,
+            'carrier_id' => $this->shipment->carrier_id,
+            'reason' => $this->reason,
+            'bounced_at' => $this->occurredAt->format('Y-m-d H:i:s'),
         ];
+    }
+
+    public function shouldBroadcast(): bool
+    {
+        return true;
     }
 }

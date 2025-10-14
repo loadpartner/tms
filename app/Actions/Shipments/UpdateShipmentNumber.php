@@ -24,6 +24,7 @@ class UpdateShipmentNumber
             'shipment_number' => $shipmentNumber,
         ]);
 
+
         return $shipment;
     }
 

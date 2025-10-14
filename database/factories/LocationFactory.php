@@ -19,7 +19,10 @@ class LocationFactory extends Factory
      */
     public function definition(): array
     {
+        $organizationId = current_organization_id();
+
         return [
+            'organization_id' => $organizationId ?? Organization::factory(),
             'name' => fake()->company(),
             'address_line_1' => fake()->streetAddress(),
             'address_line_2' => fake()->boolean() ? fake()->secondaryAddress() : null,
@@ -29,4 +32,3 @@ class LocationFactory extends Factory
         ];
     }
 }
-

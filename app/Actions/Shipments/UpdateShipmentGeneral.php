@@ -31,6 +31,7 @@ class UpdateShipmentGeneral
             'trailer_temperature_range' => $trailerTemperatureRange ?? false,
         ]);
 
+
         return $shipment;
     }
 
@@ -58,7 +59,14 @@ class UpdateShipmentGeneral
                 'nullable',
                 'numeric',
                 'required_if:trailer_temperature_range,true',
-                'gt:trailer_temperature',
+                function ($attribute, $value, $fail) {
+                    $minTemp = request('trailer_temperature');
+                    $isRange = request('trailer_temperature_range', false);
+                    
+                    if ($isRange && $minTemp !== null && $value !== null && $value <= $minTemp) {
+                        $fail('The maximum temperature must be greater than the minimum temperature.');
+                    }
+                },
             ],
             'trailer_temperature_range' => ['boolean'],
             'trailer_type_id' => ['nullable', 'exists:trailer_types,id'],

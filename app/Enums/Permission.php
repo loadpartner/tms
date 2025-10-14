@@ -26,6 +26,8 @@ enum Permission: string
 
     case INTEGRATION_SETTINGS_EDIT = 'integration-settings-edit';
 
+    case RECEIVE_EVENT_NOTIFICATIONS = 'receive-event-notifications';
+
     // extra helper to allow for greater customization of displayed values, without disclosing the name/value data directly
     public function label(): string
     {
@@ -42,6 +44,7 @@ enum Permission: string
             self::SHIPMENT_EDIT => 'Edit Shipment Details',
             self::CHECK_CALL_EDIT => 'Edit Check Calls',
             self::INTEGRATION_SETTINGS_EDIT => 'Edit Integration Settings',
+            self::RECEIVE_EVENT_NOTIFICATIONS => 'Receive Event Notifications',
         };
     }
 

@@ -1,7 +1,8 @@
 /.phpunit.cache
 /bootstrap/ssr
-/node_modules
 /lang/ct
+/misc
+/node_modules
 /public/build
 /public/hot
 /public/storage

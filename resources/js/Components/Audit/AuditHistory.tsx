@@ -64,7 +64,7 @@ export default function AuditHistory({
     }
 
     if (!showTabs) {
-        return <AuditTimeline audits={audits} loading={loading} />;
+        return <AuditTable audits={audits} loading={loading} />;
     }
 
     return (

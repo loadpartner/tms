@@ -42,37 +42,65 @@ class CreateShipment
             ]);
         }
 
-        DB::beginTransaction();
+        $organizationId = current_organization_id();
 
-        $shipment = Shipment::create([
-            'carrier_id' => $carrierId,
-            'weight' => $weight,
-            'trip_distance' => $tripDistance,
-            'trailer_type_id' => $trailerTypeId,
-            'trailer_size_id' => $trailerSizeId,
-            'trailer_temperature_range' => $trailerTemperatureRange ?? false,
-            'trailer_temperature' => $trailerTemperature,
-            'trailer_temperature_maximum' => $trailerTemperatureMaximum,
-            'shipment_number' => $shipmentNumber,
-        ]);
-
-        $shipment->customers()->attach($customerIds);
-
-        foreach ($stops as $stopData) {
-            $stop = $shipment->stops()->create([
-                'facility_id' => $stopData['facility_id'],
-                'stop_type' => $stopData['stop_type'],
-                'stop_number' => $stopData['stop_number'],
-                'special_instructions' => $stopData['special_instructions'],
-                'reference_numbers' => $stopData['reference_numbers'],
-                'appointment_at' => Carbon::parse($stopData['appointment_at']),
-            ]);
+        if (is_null($organizationId)) {
+            throw new \RuntimeException('No organization context available when creating a shipment.');
         }
 
-        DB::commit();
+        $shipment = DB::transaction(function () use (
+            $customerIds,
+            $stops,
+            $carrierId,
+            $weight,
+            $tripDistance,
+            $trailerTypeId,
+            $trailerSizeId,
+            $trailerTemperatureRange,
+            $trailerTemperature,
+            $trailerTemperatureMaximum,
+            $shipmentNumber,
+            $organizationId,
+        ) {
+            $shipment = Shipment::create([
+                'organization_id' => $organizationId,
+                'carrier_id' => $carrierId,
+                'weight' => $weight,
+                'trip_distance' => $tripDistance,
+                'trailer_type_id' => $trailerTypeId,
+                'trailer_size_id' => $trailerSizeId,
+                'trailer_temperature_range' => $trailerTemperatureRange ?? false,
+                'trailer_temperature' => $trailerTemperature,
+                'trailer_temperature_maximum' => $trailerTemperatureMaximum,
+                'shipment_number' => $shipmentNumber,
+            ]);
 
-        // Only fire carrier updated event if a carrier was actually assigned
-        if ($carrierId !== null) {
+            $customerPivotData = [];
+
+            foreach ($customerIds as $customerId) {
+                $customerPivotData[$customerId] = [
+                    'organization_id' => $organizationId,
+                ];
+            }
+
+            $shipment->customers()->attach($customerPivotData);
+
+            foreach ($stops as $stopData) {
+                $shipment->stops()->create([
+                    'organization_id' => $organizationId,
+                    'facility_id' => $stopData['facility_id'],
+                    'stop_type' => $stopData['stop_type'],
+                    'stop_number' => $stopData['stop_number'],
+                    'special_instructions' => $stopData['special_instructions'],
+                    'reference_numbers' => $stopData['reference_numbers'],
+                    'appointment_at' => Carbon::parse($stopData['appointment_at']),
+                ]);
+            }
+
+            return $shipment;
+        });
+
+        if ($carrierId) {
             event(new ShipmentCarrierUpdated($shipment));
         }
 
