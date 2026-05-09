@@ -1,0 +1,11 @@
+# Require review for security-sensitive areas
+.github/workflows/ @MrMiless44
+.github/dependabot.yml @MrMiless44
+composer.json @MrMiless44
+composer.lock @MrMiless44
+package.json @MrMiless44
+package-lock.json @MrMiless44
+pnpm-lock.yaml @MrMiless44
+.env.example @MrMiless44
+config/ @MrMiless44
+database/migrations/ @MrMiless44
